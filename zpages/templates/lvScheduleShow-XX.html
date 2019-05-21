@@ -1,0 +1,147 @@
+{% extends 'lvBaseDate.html' %}
+
+{% block content %}
+
+	<h3> Online Leave : Submitting Leave Schedule</h3>
+	<hr> 
+
+
+	<strong>
+	<table bgcolor='#cccccc'><tr><td width=250px>
+	<table>
+		<tr><td>Staff ID</td><td>{{ theStaff.staff_id }}</td></tr>
+		<tr><td>Name</td><td>{{ theStaff.first_name }}..{{ theStaff.last_name }} </td></tr>
+		<tr><td>Email</td><td>{{ theStaff.email }}</td></tr>
+		<tr><td>Position</td><td>{{ theStaff.position }}</td></tr>
+	</table>
+	</td>
+
+	<td width=200px>
+	<strong> Leave Balances</strong> 
+		<table>
+		<tr><td>Annual</td><td>{{ theStaffBalances.lv_annual }}</td></tr>
+		<tr><td>Maternity</td><td>{{ theStaffBalances.lv_maternity }} </td></tr>
+		<tr><td>Paternity</td><td>{{ theStaffBalances.lv_paternity }}</td></tr>
+		<tr><td>Study</td><td>{{ theStaffBalances.lv_study }}
+		</td></tr>
+		</table>
+	</td>
+	<td width=250px> 
+	
+        {% if theStaffSchedule %}           
+           <strong> Leave Schedule </strong>  
+            <table>               
+
+		<tr><td>{{ theStaffSchedule.sched1_days }} Days </td>
+                	<td>Starting {{ theStaffSchedule.sched1_start }}</td>
+                </tr><tr><td>{{ theStaffSchedule.sched2_days }} Days </td>
+                	<td>Starting {{ theStaffSchedule.sched2_start }}</td>
+                </tr><tr><td>{{ theStaffSchedule.sched3_days }} Days </td>
+                	<td>Starting {{ theStaffSchedule.sched3_start }}</td>
+		</tr><tr><td>.</td>
+                	<td>{% if theStaffSchedule.sched_status == 5 %} Cancelled {% endif %}</td>
+		</tr> 
+            </table>       
+      
+        {% else %}           
+            <p>A Valid / Active Leave Schedule Was Not Found For This Staff</p>       
+        {% endif %}  
+	</td>
+	</tr>
+	</table>
+	</strong>
+        
+	{% if approvalMsg %} <strong>{{approvalMsg}} </strong>{% endif %} 
+	<hr>
+
+        {% if theStaffSchedules %}           
+            <p>Found Leave Schedule</p>
+            <table cellpadding=2>
+		<tr bgcolor='#ccccee'>	
+			<td></td><td>Block 1</td><td>Duration</td>
+			<td>Block 2</td><td>Duration</td><td>Block 3</td><td>Duration</td><td>Approval Status</td>
+			<td>Cancel</td><td>Details</td>
+		</tr>
+               
+                {% for theStaffSched in theStaffSchedules %}               
+
+                <tr  bgcolor='#eeeeee'>
+		<!-- <td>{{ theStaffSched.id }} </td> -->
+		<td> &nbsp;&nbsp;&nbsp;  <!-- Staff ID : {{ schedd.0.staff_id }}  --></td>
+
+                <td>{{ theStaffSched.sched1_start }}</td>
+                <td>{{ theStaffSched.sched1_days }} Days </td>
+                <td>{{ theStaffSched.sched2_start }}</td>
+                <td>{{ theStaffSched.sched2_days }} Days </td>
+                <td>{{ theStaffSched.sched3_start }}</td>
+                <td>{{ theStaffSched.sched3_days }} Days </td>
+
+                <td> <!-- Status {{ theStaffSchedule1..sched_status }} -->
+			{% if theStaffSched.sched_status == 9 %} HOD Approval {% endif %}
+			{% if theStaffSched.sched_status == 8 %} Second Approval {% endif %}
+			{% if theStaffSched.sched_status == 7 %} HR Approval {% endif %}
+			{% if theStaffSched.sched_status == 6 %} Approved {% endif %}
+			{% if theStaffSched.sched_status == 5 %} Cancelled {% endif %}
+		</td>
+
+                {% if boss_lvl == 9 %}<td> 
+		<a href='/lvSchedApproval?id={{ theStaffSched.id }}&lvl=1'> 
+		Approve L1 </a> </td> {% endif%}
+
+                {% if boss_lvl == 8 %}<td> 
+		<a href='/lvSchedApproval?id={{ theStaffSched.id }}&lvl=2'> 
+		Approve L2 </a> </td> {% endif%}
+
+                {% if boss_lvl == 7 %}<td> 
+		<a href='/lvSchedApproval?id={{ theStaffSched.id }}&lvl=3'> 
+		Approve L3 </a> </td> {% endif%}
+
+                <td>{% if boss_lvl > 5 %} <a href='/lvSchedApproval?id={{ theStaffSched.id }}&lvl=c'>Cancel </a> {% endif%}</td>
+                <td> <a href='/lvSchedApprovalDetail?id={{ theStaffSched.id }}&lvl=0'>Details</a> 
+		<br><br></td>
+                <!-- {{ book.approval1_dt }} ==
+                {{ book.approval2_dt}} ==
+                {{ book.approval3_dt}} -->
+		</tr> 
+
+              {% endfor %} 
+            </table>       
+        {% else %}           
+            <p>No Results matched your search criteria.</p>       
+        {% endif %}  
+
+
+
+	<hr> 
+	<table bgcolor='#cccccc' border=1>
+	<tr>
+
+	<td>XX
+         {% if schedExist == 1 %}           
+            <p>Found Leave Schedule : Delete The Old Schedule If You Wish To RE-SCHEDULE</p>
+		<br><br><br><br>
+	{% endif %}
+	</td>
+	<td width=100px> xx2</td>
+
+	<td width=300px> xx3
+
+{% if schedExist == 0 %}  **** {{schedExist}}
+ <form method="post">
+Schedule Form <br>
+
+	    {% csrf_token %}{{ form.date }}
+	<table>
+	    {{ form.as_table }}
+
+	      <tr><td><button type="submit">Send</button></td></tr>
+	</table>
+	</form>
+{% endif %} 
+
+	</td>
+	</tr>
+	</table>
+
+
+{% endblock %}

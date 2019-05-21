@@ -1,0 +1,232 @@
+{% extends 'lvBase.html' %}
+
+{% block content %}
+
+	<h3> Leave Approval : Detailed View  - 	Welcome {{ myUser.first_name }} [ {{ myUser.staff_id }} ]</h3>
+
+	<strong>
+	<table bgcolor='#ddd'  class="mytabo">
+	<tr><td width=250px>
+
+	<table class="mytabo">
+		<tr><td class="mytid">Staff ID</td><td class="mytid">{{ theStaff.staff_id }}</td></tr>
+		<tr><td class="mytid">Name</td><td class="mytid">{{ theStaff.first_name }}<br>{{ theStaff.last_name }} </td></tr>
+		<tr><td class="mytid">Email</td><td class="mytid">{{ theStaff.email }}</td></tr>
+		<tr><td class="mytid">Position</td class="mytid"><td class="mytid">{{ theStaff.position }}</td></tr>
+	</table>
+	</td>
+
+	<td width=200px>
+	<strong> Leave Balances</strong> 
+		<table class="mytabo">
+		<tr><td class="mytid">Annual</td><td class="mytid">{{ theStaffBalances.lv_annual }}</td></tr>
+		{% if theStaff.sex == 'F' %}
+		<tr><td class="mytid">Maternity</td><td class="mytid">{{ theStaffBalances.lv_maternity }} </td></tr>	{% endif %}
+		{% if theStaff.sex == 'M' %}
+		<tr><td class="mytid">Paternity</td><td class="mytid">{{ theStaffBalances.lv_paternity }}</td></tr>	{% endif %}
+		<tr><td class="mytid">Study</td><td class="mytid">{{ theStaffBalances.lv_study }}
+		<tr><td class="mytid">Sick Leave</td class="mytid"><td class="mytid">{{ theStaffBalances.lv_sick }}
+		</td></tr>
+		</table>
+	</td>
+	<td width=250px> 
+	
+        {% if theStaffSchedule %}           
+           <strong> Leave Schedule </strong>  
+            <table class="mytabo">               
+                <tr>
+		<td class="mytid"> <!--  {{theStaffSchedule.id }}  --></td>
+		</tr>
+
+		<!--<tr><td>Staff ID : {{ theStaffSchedule.staff_id }} </td>
+			<td></td>
+                </tr> -->
+
+		<tr><td class="mytid">{{ theStaffSchedule.sched1_days }} Days </td>
+                	<td class="mytid">Starting {{ theStaffSchedule.sched1_start }}</td>
+                </tr><tr><td class="mytid">{{ theStaffSchedule.sched2_days }} Days </td>
+                	<td class="mytid">Starting {{ theStaffSchedule.sched2_start }}</td>
+                </tr>
+                </tr>   {% if theStaffSchedule.sched3_days > 0 %} 
+		<tr><td class='mytid'>{{ theStaffSchedule.sched3_days }} Days </td>
+                	<td class='mytid'> Starting {{ theStaffSchedule.sched3_start }}  </td>
+		</tr> {% endif %}
+                </tr>   {% if theStaffSchedule.sched4_days > 0 %} 
+		<tr><td class='mytid'>{{ theStaffSchedule.sched4_days }} Days </td>
+                	<td class='mytid'> Starting {{ theStaffSchedule.sched4_start }}  </td>
+		</tr> {% endif %}
+                </tr>   {% if theStaffSchedule.sched5_days > 0 %} 
+		<tr><td class='mytid'>{{ theStaffSchedule.sched5_days }} Days </td>
+                	<td class='mytid'> Starting {{ theStaffSchedule.sched5_start }}  </td>
+		</tr> {% endif %}
+
+            </table>       
+      
+        {% else %}           
+            <p>The Leave Schedule For This Staff Was Not Found ...</p>       
+        {% endif %}  
+	</td>
+	</tr>
+	</table>
+	</strong>
+    	<br>
+	<table>
+	 <tr>
+	<td width=450px>
+
+	{% if saveMsg %} <strong><font color='#f00'>{{saveMsg}} </font></strong>{% endif %} 
+	
+        {% if theAppn %}           
+            <p><strong> The Leave Application Details </p>
+
+              <table>             
+		<tr>
+		<td>Staff ID: {{ theAppn.staff_id }} </td>
+		<td> {{ theAppn.first_name }}  {{ theAppn.second_name }} </td>
+		</tr>
+
+		<tr>
+		<td>Type: </td><td>
+			{% if theAppn.lv_type == 1 %} Annual{% endif %}
+			{% if theAppn.lv_type == 2 %} Maternity {% endif %}
+			{% if theAppn.lv_type == 3 %} Paternity {% endif %}
+			{% if theAppn.lv_type == 4 %} Study 	{% endif %}
+			{% if theAppn.lv_type == 5 %} Compassion {% endif %}
+			{% if theAppn.lv_type == 6 %} Sick {% endif %}
+			{% if theAppn.lv_type == 7 %} Other {% endif %}
+			 </td></tr>
+
+                <tr><td>Starting 	</td><td> {{ theAppn.lv_startdate }} </td></tr>
+                <tr><td>Returning 		</td><td>{{ theAppn.lv_enddate }} </td></tr>
+                <tr><td>Days 	</td><td>{{ theAppn.lv_days }} </td></tr>
+                <tr><td>Remarks 	</td><td>{{ theAppn.remarks }} </td></tr>
+
+                <tr><td>Status : 
+			{% if theAppn.approval == 9 %} HOD Approval {% endif %}
+			{% if theAppn.approval == 8 %} Second Approval {% endif %}
+			{% if theAppn.approval == 7 %} HR Approval {% endif %}
+			{% if theAppn.approval == 6 %} Approved {% endif %}
+			{% if theAppn.approval == 5 %} Cancelled {% endif %}
+			</td></tr>
+
+		<tr><td>Cancelled : 
+			{% if appln.approval1 != 5 %} No  {% endif %}
+			{% if appln.approval1 == 5 %} Yes {% endif %}
+			</td></tr>
+		</table>
+
+		</strong>
+
+		{% if boss_lvl == 9 %}
+		<a href='/lvApprovalDetail?id={{ theAppn.id }}&lvl=1' onclick="return confirm('Are you sure you want to Approve?');">
+		Approve * <img src="/zpages/static/admin/img/icon-yes.svg"> </a>  <br>{% endif%}
+
+		{% if boss_lvl == 8 %}
+		<a href='/lvApprovalDetail?id={{ theAppn.id }}&lvl=2' onclick="return confirm('Are you sure you want to Approve?');">
+		Approve ** <img src="/zpages/static/admin/img/icon-yes.svg"> </a>  <br>{% endif%}
+
+		{% if boss_lvl == 7 %}
+		<a href='/lvApprovalDetail?id={{ theAppn.id }}&lvl=3' onclick="return confirm('Are you sure you want to Approve?');">
+		Approve *** <img src="/zpages/static/admin/img/icon-yes.svg"> </a>  <br>{% endif%}
+                
+		<a href='/lvApprovalDetail?id={{ theAppn.id }}&lvl=c'>Cancel This Application 
+		   <img src="/zpages/static/admin/img/icon-no.svg"> </a>
+		<br>
+		              
+            </ul>       
+        {% else %}           
+            <p>The Leave Application For Approval Has An Issue ...</p>       
+        {% endif %}     
+
+	</td>
+	<td valign=top>
+			<table><tr>
+			<p>{{ lvholidays|length }} Holiday{{ lvholidays|pluralize }} Defined This Year </p>
+               		 {% for holiday in lvholidays %}               
+                	<tr bgcolor='#eeeeee'>
+			<td>{{ holiday.lv_year }}</td>
+			<td>{{ holiday.lv_holidate }}</td>
+			<td>{{ holiday.lv_holiday }}</td>
+			</tr>
+			{% endfor %}
+			</table>
+	</td>
+	</tr>
+	</table>
+
+        {% if lvAppsList %}           
+            <p>Found {{ lvAppsList|length }} Leave Applications{{ lvAppsList|pluralize }} for {{ theStaff.first_name }}	</p>
+
+            <table border=0 cellpadding=2>
+		<tr bgcolor='#ccccee'>	
+			<td></td><td>Staff ID</td><td>FirstName</td><td>Leave Type</td><td>Start Date</td>
+			<td>Days</td><td>Ending</td><td>Approval Status</td>
+			<td>Deducted</td><td>Cancelled</td><td>Link</td>
+		</tr>
+               
+                {% for appln in lvAppsList %}               
+                <tr bgcolor='#eeeeee'>
+		<td> &nbsp &nbsp &nbsp<!-- {{ appln.id }}.. --></td> 
+		<td> {{ appln.staff_id }}</td>
+		<td> {{ appln.first_name }}</td>
+
+                <td><!-- Leave Type -->
+			{% if appln.lv_type == 1 %} Annual {% endif %}
+			{% if appln.lv_type == 2 %} Maternity {% endif %}
+			{% if appln.lv_type == 3 %} Paternity {% endif %}
+			{% if appln.lv_type == 4 %} Study 	{% endif %}
+			{% if appln.lv_type == 5 %} Compassion {% endif %}
+			{% if appln.lv_type == 6 %} Sick Leave {% endif %}
+			{% if appln.lv_type == 7 %} Other {% endif %}
+			</td>
+
+		<td>{{ appln.lv_startdate }}</td>
+
+                <td>{{ appln.lv_days }}</td>
+		<td>{{ appln.lv_enddate }}</td>
+                <td> <!-- Approval Status -->
+
+			{% if appln.approval == 9 %} HOD Approval {% endif %}
+			{% if appln.approval == 8 %} Second Approval {% endif %}
+			{% if appln.approval == 7 %} HR Approval {% endif %}
+			{% if appln.approval == 6 %} Approved {% endif %}
+			{% if appln.approval == 5 %} Cancelled {% endif %}
+			</td>
+
+                <td> <!-- Deducted -->
+			{% if appln.deducted == 0 %} No {% endif %}
+			{% if appln.deducted == 1 %} Yes{% endif %}
+			</td>
+                <!-- <td>Approval Date :{{ appln.approval1_dt }}</td> -->
+
+               <td> <!-- Cancelled -->
+			{% if appln.cancelled == 0 %} No {% endif %}
+			{% if appln.cancelled == 1 %} Cancelled {% endif %}
+
+		<!--  <a href='/lvCancel?id={{ appln.id }}&lvl=c'>  Cancel </a> --> 
+			</td>
+
+                <td> <a href='/lvApprovalDetail?id={{ appln.id }}&lvl=0'>See Details</a> </td>
+
+		</tr> 
+                {% endfor %}           
+            </table>       
+        {% else %}           
+            <p>No Leave Applications Were Found For You</p>       
+        {% endif %}     
+
+	<br>
+
+<!--   
+</td>
+</tr>
+</table>
+
+</body>
+</html>   -->
+
+<hr>
+ /// AL {{ boss_lvl }}
+
+{% endblock %}
+

@@ -1,0 +1,13 @@
+<h1>Leave Application Template </h1>
+
+<!-- templates/email.html -->
+<h1>Apply For Leave</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="form-actions">
+      <button type="submit">Send</button>
+    </div>
+</form>
+

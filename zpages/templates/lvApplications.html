@@ -1,0 +1,160 @@
+{% extends 'lvBaseDate.html' %}
+
+{% block content %}
+     
+    <h3>Online Leave Application : Welcome {{ theStaff.first_name }} [{{ user.username }}] </h3>
+	<br>Annual Leave Applications Should be Applied For With 14 Days Lead Time.
+	<br>Maternity Leave Should be Applied For With 60 Days Lead Time <br><br>
+     
+	<table valign=top border=1 bgcolor='#eee'  class="mytabo">
+	<tr><td width=380px>
+
+	{% if lvSchedule %}
+
+	<table  class="mytabo"> <!-- for the form -->
+	<h3>Apply For Leave</h3>
+	<form method="post">
+	    {% csrf_token %}
+	    {{ form.as_table }}
+	<tr><td>.</td><td>
+	    <div class="form-actions">
+	      <button type="submit">Send</button>
+	    </div>
+	</td></tr>
+	</form>
+	</table>
+	
+	{% else %}
+		<h3> Before You Can Apply For Leave</h3>
+		<h3> Enter A Leave Schedule ...</h3>
+		<br><p> The Leave Application Form is Currently Hidden Because Your Leave Schedule Is Not Available.
+		<br><br> Take afew Minutes and Complete the Leave Schedule Form (Only Once Per Year)
+		And Return Here to Find the Leave Application Form Open.
+		
+		<br><br><a href='/lvScheduleShow/'> > Leave Schedule Entry Form</a> <br>
+
+	{% endif %}
+	</td>
+
+	<td valign=top width=150px>
+		<table class="mytabo">
+		<tr><td>
+		<strong>Leave Balances <br> </strong></td><td>.</td></tr>
+		<tr><td>Annual Leave</td><td>{{ myLvBals.lv_annual }}</td></tr>
+
+		{% if theStaff.sex == 'F' %}
+		<tr><td>Maternity</td><td>{{ myLvBals.lv_maternity }} </td></tr> {% endif %}
+		{% if theStaff.sex == 'M' %}
+		<tr><td>Paternity</td><td>{{ myLvBals.lv_paternity }}</td></tr> {% endif %}
+
+		<tr><td>Study</td><td>{{ myLvBals.lv_study }}</td></tr>
+		<tr><td>Sick Leave</td><td>{{ myLvBals.lv_sick }}</td></tr>
+		<tr><td>Compassion</td><td>{{ myLvBals.lv_compassion }}</td></tr>
+		</table>
+	</td>
+	<td valign=top>
+
+        {% if lvSchedule %}           
+           <strong> Leave Schedule </strong>  
+            <table class="mytabo">                
+
+		<tr><td class='mytid'>{{ lvSchedule.sched1_days }} Days </td>
+                	<td class='mytid'>Starting {{ lvSchedule.sched1_start }}</td>
+                </tr><tr><td class='mytid'>{{ lvSchedule.sched2_days }} Days </td>
+                	<td class='mytid'>Starting {{ lvSchedule.sched2_start }}</td>
+
+                </tr>   {% if lvSchedule.sched3_days > 0 %} 
+		<tr><td class='mytid'>{{ lvSchedule.sched3_days }} Days </td>
+                	<td class='mytid'> Starting {{ lvSchedule.sched3_start }}  </td>
+		</tr> {% endif %}
+                </tr>   {% if lvSchedule.sched4_days > 0 %} 
+		<tr><td class='mytid'>{{ lvSchedule.sched4_days }} Days </td>
+                	<td class='mytid'> Starting {{ lvSchedule.sched4_start }}  </td>
+		</tr> {% endif %}
+                </tr>   {% if lvSchedule.sched5_days > 0 %} 
+		<tr><td class='mytid'>{{ lvSchedule.sched5_days }} Days </td>
+                	<td class='mytid'> Starting {{ lvSchedule.sched5_start }}  </td>
+		</tr> {% endif %}
+
+		<tr><td class='mytid'>.</td>
+                	<td class='mytid'>{% if lvSchedule.sched_status == 5 %} Cancelled {% endif %}</td>
+		</tr> 
+            </table>       
+      
+        {% else %}           
+            <strong>Leave Schedule</strong> 
+            <br><br><p>A Leave Schedule Was Not Found </p> 
+		Please Enter a Leavev Schedule In Schedule Form <br>      
+        {% endif %}  
+
+	</td>
+	</tr></table>
+   
+	{% if lvErrorMessage %}   <br><strong><font color='#f00'> {{lvErrorMessage}}</font> </strong> <br><br>{% endif %}
+	{% if saveMsg %}   <br><strong>{{saveMsg}}</strong>
+	{% if myitem3 %} <br> Starting :: {{ myitem3 }}  Ending {{ myfinaldate }} :: Leave Days {{ myitemx }}<br><br> {% endif %}
+	{% endif %}
+
+        {% if lvApps %}           
+            <p>Found {{ lvApps|length }} Leave Applications{{ lvApps|pluralize }} For <b> {{ theStaff.first_name }}</b>
+	</p>
+            <table border=0 cellpadding=2>
+		<tr bgcolor='#ccccee'>	
+			<td></td><td>Leave Type</td><td>Start Date</td>
+			<td>Days</td><td>Return</td><td>Approval Status</td>
+			<td>Deducted</td><td>Cancelled</td><td>Link</td>
+		</tr>
+               
+                {% for appln in lvApps %}               
+                <tr bgcolor='#eeeeee'>
+		<td> &nbsp &nbsp &nbsp<!-- {{ appln.id }}.. --></td> 
+		<!-- <td>Staff ID:{{ appln.staff_id }}..</td> -->
+
+                <td><!-- Leave Type -->
+			{% if appln.lv_type == 1 %} Annual  {% endif %}
+			{% if appln.lv_type == 2 %} Maternity {% endif %}
+			{% if appln.lv_type == 3 %} Paternity	{% endif %}
+			{% if appln.lv_type == 4 %} Study {% endif %}
+			{% if appln.lv_type == 5 %} Compassion {% endif %}
+			{% if appln.lv_type == 6 %} Sick Leave {% endif %}
+			{% if appln.lv_type == 7 %} Special {% endif %}
+			</td>
+
+		<td>{{ appln.lv_startdate }}</td>
+                <td>{{ appln.lv_days }}</td>
+		<td>{{ appln.lv_enddate }}</td>
+
+                <td> <!-- Approval Status -->
+
+			{% if appln.approval == 9 %} HOD Approval {% endif %}
+			{% if appln.approval == 8 %} Second Approval {% endif %}
+			{% if appln.approval == 7 %} HR Approval {% endif %}
+			{% if appln.approval == 6 %} Approved {% endif %}
+			{% if appln.approval == 5 %} Cancelled {% endif %}
+			</td>
+
+                <td> <!-- Deducted -->
+			{% if appln.deducted == 0 %} No {% endif %}
+			{% if appln.deducted == 1 %} Yes{% endif %}
+			</td>
+                <!-- <td>Approval Date :{{ appln.approval1_dt }}</td> -->
+
+               <td> <!-- Cancelled -->
+			{% if appln.cancelled == 0 %}No{% endif %}
+			{% if appln.cancelled == 1 %}Yes{% endif %}
+
+		<!--  <a href='/lvCancel?id={{ appln.id }}&lvl=c'>  Cancel </a> --> 
+			</td>
+
+                <td> <a href='/lvApprovalDetail?id={{ appln.id }}&lvl=0'>See Details</a> </td>
+
+		</tr> 
+                {% endfor %}           
+            </table>       
+        {% else %}           
+            <br><p>No Leave Applications Were Found For You<br> You Can Apply In the Form Above</p>       
+        {% endif %}     
+
+	</table>
+
+{% endblock %}

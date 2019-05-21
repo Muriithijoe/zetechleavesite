@@ -1,0 +1,52 @@
+
+<html>     
+    <head>         
+    <title>Online Leave Application</title>
+	<link rel="stylesheet" type="text/css" href="/zpages/static/customcss/cbase1.css" />
+	<link rel="stylesheet" type="text/css" href="/zpages/static/admin/css/base.css" />
+  	<link rel="stylesheet" type="text/css" href="/zpages/static/admin/css/changelists.css" />
+
+    </head>     
+    <body>       
+    <h1>Online Leave Application</h1>
+     
+     <p><strong>Welcome {{ myUser.first_name }} : Online Leave Application</strong>
+<hr>
+<table border=0>
+<tr>
+<td width=210px valign=top>
+
+<a href='/'>Home Page</a><br><br>
+<a href='/lvCentral/?dept_id=0'>Leave Central</a><br><br>
+<a href='/Approvers/?dept_id=0'>Approvers</a><br><br>
+
+
+
+<a href='/lvScheduleList/?deptIdX=0&approvalX=0'>Leave Schedules</a><br><br>
+<a href='/lvApplicationList/?lvTypeX=0&deptIdX=0&daysX=0&approvalX=0'>Leave Reports</a><br><br>
+
+<a href='/lvBalance/?deptIdX=0&approvalX=0'>Leave Balances</a><br><br>
+<a href='/uzers/logout/'>Logout</a> [ {{ user }} ]<br><br>
+<br><br>
+
+
+{% if request.user.is_staff == 1 %}
+ <a href='/admin'>Add Staff</a><br><br>
+ <a href='/admin'>Add Department</a><br><br>
+ <hr>
+ Run With Initialize Parameter Each<br>
+ <br>
+ <a href='/MakeApprovers/'> Make Approvers </a><br><br>
+ <a href='/CreateUsers/'>Create Users</a> <br><br>
+ <a href='/lvBalance/'>Balance Initialize</a> <br><br>
+ <a href='/LogsView/'>View Logs</a> <br><br>
+
+{% endif %}
+
+</td>
+<td valign=top>
+
+	{% block content %}
+
+	{% endblock %}
+

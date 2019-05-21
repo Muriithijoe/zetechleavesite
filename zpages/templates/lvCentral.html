@@ -1,0 +1,82 @@
+{% extends 'lvBaseManager.html' %}
+
+{% block content %} 
+
+<form method=get action ='/lvCentral' >
+
+Department
+<select name='dept_id'>
+  <option value="1">OFFICE OF THE DVC</option>
+  <option value="2">Administration</option>
+  <option value="3">CENTRE FOR PROFESSIONAL CERT</option>
+  <option value="4">EDUCATION,ARTS AND SOCIAL SCI</option>
+  <option value="5">EXAMINATIONS OFFICE</option>
+  <option value="6">FACULTY OF ICT& ENGINEERING</option>
+  <option value="7">FINANCE</option>
+  <option value="8">OFFICE OF THE CHIEF OO</option>
+  <option value="9">HOSPITALITY AND TOURISM</option>
+  <option value="10">HUMAN RESOURCE</option>
+  <option value="11">INTERNAL AUDIT</option>
+  <option value="12">ICT CENTRE</option>
+  <option value="13">LIBRARY</option>
+  <option value="14">MARKETING & PUBLIC R</option>
+  <option value="15">MEDIA, ARTS AND DESIGN</option>
+  <option value="16">OFFICE OF THE REGISTR</option>
+  <option value="17">OFFICE OF THE VICE CHANCELLOR</option>
+  <option value="18">PROCUREMENT</option>
+  <option value="19">QUALITY ASSURANCE OFFICE</option>
+  <option value="20">RECORDS OFFICE</option>
+  <option value="21">SCHOOL OF BUSINESS & ECONOMICS</option>
+  <option value="23">STORES</option>
+  <option value="24">STUDENT AFFAIRS, PLAC</option>
+  <option value="25">ZETECH DIGITAL SCHOOL</option>
+</select>
+
+<input type='submit' value ='Filter'>
+
+</form>
+
+<form method=get action ='/lvCentral' >
+
+Seach by First OR Second Name
+<input type='text' name='txt_search'>
+<input type='submit' value ='Search'>
+
+</form>
+
+        <strong>Welcome {{ myUser.last_name }} : Leave Main Listing </strong>
+ 	{% if lvAllUsers %}  Found {{ lvAllUsers|length }} Records{{ lvAllUsers|pluralize }}</p>{% endif %}
+   
+        {% if lvAllUsers %}           
+           <table>   
+		<tr bgcolor='#ccccee'>	
+			<td>Staff ID</td><td>First Name</td><td>Other Name</td>
+			<td>Email</td><td>Department</td><td>Link</td>
+		</tr>
+            
+                {% for astaff in lvAllUsers %}               
+                <tr   bgcolor='#eeeeee'>
+		<!-- <td>{{ astaff.id }} </td> -->
+		<td>{{ astaff.staff_id }} </td>
+                <td>{{ astaff.first_name }} {{ astaff.last_name }} </td>
+                <td>{{ astaff.position }} </td>
+                <td>{{ astaff.email }}
+		</td>
+
+                <td> 
+		{% if boss_lvl == 9 %}<a href='/lvStaffSummary?staff_id={{ astaff.staff_id }}&lvl=2'> 
+		{% endif%}Applications {% if boss_lvl == 8 %}</a> {% endif%}</td>
+
+                <td> <a href='/lvStaffSummary?staff_id={{ astaff.staff_id }}&lvl=c'> Summary </a> </td>
+		</tr> 
+              
+                {% endfor %}           
+            </table>       
+        {% else %}           
+            <p>No Results For Main Leave Listing Were Found</p>       
+        {% endif %} 
+
+    
+    <!-- </body></html> -->
+
+{% endblock %}

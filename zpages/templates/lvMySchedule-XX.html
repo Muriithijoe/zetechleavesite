@@ -1,0 +1,114 @@
+{% extends 'lvBaseDate.html' %}
+
+{% block content %}
+       
+    <h3>Online Leave Application</h3>
+     
+        <p>Welcome {{ query.first_name }} : Online Leave Schedule <strong>
+
+	<table bgcolor='#cccccc'><tr><td>
+	<table>
+		<tr><td>Staff ID</td><td>{{ myUser.staff_id }}</td></tr>
+		<tr><td>Name</td><td>{{ myUser.first_name }}..{{ query.last_name }} </td></tr>
+		<tr><td>Email</td><td>{{ myUser.email }}</td></tr>
+		<tr><td>Position</td><td>{{ myUser.position }}</td></tr>
+	</table>
+	</td><td width=150px> </td>
+	<td>
+
+	<p>Your Personal Leave Balances Are</p>
+		<table>
+		<tr><td>Annual Leave</td><td>{{ myLvBals.lv_annual }}</td></tr>
+		<tr><td>Maternity</td><td>{{ myLvBals.lv_maternity }} </td></tr>
+		<tr><td>Paternity</td><td>{{ myLvBals.lv_paternity }}</td></tr>
+		<tr><td>Study</td><td>{{ myLvBals.lv_study }}</td></tr>
+		<tr><td>Compassion</td><td>{{ myLvBals.lv_study }}</td></tr>
+		<tr><td>Other</td><td>{{ myLvBals.lv_study }}</td></tr>
+	</table>
+	</tr></table>
+   
+	{% if saveMsg %} 
+		<br><strong>{{saveMsg}}</strong>
+	{% endif %}
+
+	<hr>
+
+        <p>LEAVE SCHEDULES PENDING APPROVAL: <strong>{{ query }}</strong></p>
+   
+	{% if approvalMsg %} <strong>{{approvalMsg}} </strong>{% endif %} 
+	<hr>
+
+        {% if lvScheds %}           
+            <p>Found {{ lvScheds|length }} Leave Schedule{{ lvScheds|pluralize }}.</p>
+            <table cellpadding=2>
+		<tr bgcolor='#ccccee'>	
+			<td></td><td>Block 1</td><td>Duration</td>
+			<td>Block 2</td><td>Duration</td><td>Block 3</td><td>Duration</td><td>Approval Status</td>
+			<td>Deduction</td><td>Cancellation</td>
+		</tr>
+               
+                {% for schedd in lvScheds %}               
+                <tr  bgcolor='#eeeeee'>
+		<!-- <td>{{ schedd.id }} </td> -->
+		<td> &nbsp;&nbsp;&nbsp;  <!-- Staff ID : {{ schedd.staff_id }}  --></td>
+
+                <td>{{ schedd.sched1_start }}</td>
+                <td>{{ schedd.sched1_days }} Days </td>
+                <td>{{ schedd.sched2_start }}</td>
+                <td>{{ schedd.sched2_days }} Days </td>
+                <td>{{ schedd.sched3_start }}</td>
+                <td>{{ schedd.sched3_days }} Days </td>
+
+                <td> <!-- Status {{ schedd.sched_status }} -->
+			{% if schedd.sched_status == 9 %} HOD Approval {% endif %}
+			{% if schedd.sched_status == 8 %} Second Approval {% endif %}
+			{% if schedd.sched_status == 7 %} HR Approval {% endif %}
+			{% if schedd.sched_status == 6 %} Approved {% endif %}
+			{% if schedd.sched_status == 5 %} Cancelled {% endif %}
+		</td>
+
+                {% if boss_lvl == 9 %}<td> 
+		<a href='/lvSchedApproval?id={{ schedd.id }}&lvl=1&user_id={{ myUser.staff_id }}'> 
+		Approve L1 </a> </td> {% endif%}
+
+                {% if boss_lvl == 8 %}<td> 
+		<a href='/lvSchedApproval?id={{ schedd.id }}&lvl=2&user_id={{ myUser.staff_id }}'> 
+		Approve L2 </a> </td> {% endif%}
+
+                {% if boss_lvl == 7 %}<td> 
+		<a href='/lvSchedApproval?id={{ schedd.id }}&lvl=3&user_id={{ myUser.staff_id }}'> 
+		Approve L3 </a> </td> {% endif%}
+
+                <td>Cancelled : {{ book.cancelled}} ...<a href='/lvSchedApproval?id={{ schedd.id }}&lvl=c&user_id={{ myUser.staff_id }}'>Cancel </a> </td>
+                <td> <a href='/lvSchedApprovalDetail?id={{ schedd.id }}&lvl=0&user_id={{ myUser.staff_id }}'>Details</a> 
+		<br><br></td>
+                <!-- {{ book.approval1_dt }} ==
+                {{ book.approval2_dt}} ==
+                {{ book.approval3_dt}} -->
+		</tr> 
+              
+                {% endfor %}           
+            </table>       
+        {% else %}           
+            <p>No Results matched your search criteria.</p>       
+        {% endif %}  
+	<hr>
+	
+	<table bgcolor='#cccccc'>
+	<tr><td>
+         {% if lvApps %}           
+            <p>Found {{ lvApps|length }} Leave Application{{ lvApps|pluralize }}.</p>
+		<p>Do Not Apply For Same Leave Type. <br>First Delete (Cancel The Pending Leave <br> Applications)</p>
+		<br><br><br><br>
+	{% endif %}
+	</td>
+	<td width=100px> </td>
+	<td width=300px>
+
+	<h3>Enter Leave Schedule</h3>
+        <p><a href='http://localhost:8000/lvScheduleShow/?user_id={{ myUser.staff_id }}'>Fill Annual Schedule</a></p>
+
+	</td>
+	</tr></table>
+
+{% endblock %}

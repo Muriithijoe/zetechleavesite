@@ -1,0 +1,53 @@
+# \books\templates\results.html
+
+<html>     
+    <head>         
+    <title>Returned Data</title>     
+    </head>     
+    <body>       
+        <p>LEAVES PENDING APPROVAL: <strong>
+  {{ query.id }}..{{ query.staff_id }} <br>{{ query.first_name }}..{{ query.last_name }}..<br>
+	{{ query.phone_number }}..{{ query.email }}..<br>{{ query.position }}..</strong></p>
+
+        <p><a href='http://localhost:8000/lvApplied?user_id={{user_id}}'>Leave Applications</a></p>
+        <p><a href='http://localhost:8000/lvBalance/'>Leave Balances</a></p>
+        <p>============</p>
+
+        {% if myLvApps %}           
+            <p>Your Personal Leave Applications Are {{ myLvApps|length }} {{ myLvApps|pluralize }}.</p>
+        {% endif %}     
+   
+	<hr>
+
+	<p>Your Personal Leave Balances Are
+		ANNUAL...{{ myLvBals.lv_annual }}.<br>MATERNITY....{{ myLvBals.lv_maternity }} <br>PATERNITY..{{ myLvBals.lv_paternity }}.<br>STUDY...{{ myLvBals.lv_study }} </p>
+	<br>
+
+        {% if myLvApps %}           
+            <p>There Are {{ lvApps|length }} Leave Application  {{ lvApps|pluralize }} Pending Approval.</p>
+        {% endif %}     
+
+        {% if lvApps %}           
+            <p>Found {{ lvApps|length }} Leave Application{{ lvApps|pluralize }}.</p>
+            <ul>               
+                {% for book in lvApps %}               
+                <li>
+		{{ book.id }}..
+		{{ book.staff_id }}..
+                {{ book.lv_type }} ..
+                {{ book.lv_days }} ...
+                Status {{ book.approval1 }}...<a href='/lvApproval?id={{ book.id }}&lvl=1'>Approve 1</a>
+                Status {{ book.approval2 }}...<a href='/lvApproval?id={{ book.id }}&lvl=2'>Approve 2</a>
+                Status {{ book.approval3 }}...<a href='/lvApproval?id={{ book.id }}&lvl=3'>Approve 3</a>
+                {{ book.cancelled}} ...<a href='/lvApproval?id={{ book.id }}&lvl=c'>Cancel</a>
+                {{ book.approval1_dt }} ==
+                {{ book.approval2_dt}} ==
+                {{ book.approval3_dt}} </li> 
+              
+                {% endfor %}           
+            </ul>       
+        {% else %}           
+            <p>No Results matched your search criteria.</p>       
+        {% endif %}     
+    </body>
+</html>

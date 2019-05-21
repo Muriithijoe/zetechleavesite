@@ -1,0 +1,173 @@
+{% extends 'lvBaseDate.html' %}
+
+{% block content %}
+
+	<strong> Leave Schedule - Welcome {{ theStaff.first_name }} [{{ user.username }} ] </strong>
+	<br><br>
+	Leave Schedule is an Annual Plan for taking leave during the year. 
+	It is required to Submit only One Leave Schedule.<br>
+	If you already submitted and It is Approved, The Entry Form Will be Unavailable Afterwards.<br><br>
+	
+	<strong>
+	{% if overlapp > 0 %} <hr>Check The Schedule Dates At Each Block of Leave : The Dates May Be Conflicting.<br> {% endif %}
+	{% if overlapp == 6 %} The Total Number Of Days Should Not Exceed Annual Balance<br> {% endif %}
+	</strong>
+
+	<strong>
+	<table bgcolor='#ddd' border=0 cellpadding =10>
+	<tr>
+	<td width=300px valign=top>
+	<br>
+
+        {% if theStaffSchedule %}           
+           <strong> Leave Schedule </strong>  
+            <table class="mytabo">                
+
+		<tr><td class='mytid'>{{ theStaffSchedule.sched1_days }} Days </td>
+                	<td class='mytid'>Starting {{ theStaffSchedule.sched1_start }}</td>
+                </tr><tr><td class='mytid'>{{ theStaffSchedule.sched2_days }} Days </td>
+                	<td class='mytid'>Starting {{ theStaffSchedule.sched2_start }}</td>
+                </tr>
+   		{% if theStaffSchedule.sched3_days > 0 %} <tr>
+			<td class='mytid'>{{ theStaffSchedule.sched3_days }} Days </td>
+                	<td class='mytid'>Starting {{ theStaffSchedule.sched3_start }}</td>
+                </tr> {% endif %}
+   		{% if theStaffSchedule.sched4_days > 0 %} <tr>
+			<td class='mytid'>{{ theStaffSchedule.sched4_days }} Days </td>
+                	<td class='mytid'>Starting {{ theStaffSchedule.sched4_start }}</td>
+                </tr> {% endif %}
+   		{% if theStaffSchedule.sched5_days > 0 %} <tr>
+			<td class='mytid'>{{ theStaffSchedule.sched5_days }} Days </td>
+                	<td class='mytid'>Starting {{ theStaffSchedule.sched5_start }}</td>
+		</tr> {% endif %}
+		<tr><td class='mytid'>.</td>
+                	<td class='mytid'>{% if theStaffSchedule.sched_status == 5 %} Cancelled {% endif %}</td>
+		</tr> 
+            </table>       
+
+        {% else %}           
+            <strong>Enter Leave Schedule</strong>
+ 	<br><br>
+            A Leave Schedule Was Not Found For You 
+	<br> Enter a Schedule In the Form To The Right.     
+	<br><br> You can break your Leave Schedule <strong>Upto 5 Blocks of Leave</strong>. 
+	However, You May Choose to split 2, 3, 4 or 5 times. At Least 2 Blocks are Mandatory.
+
+	<br><br> The Leave Blocks Dates Should Not Be Overlapping.   
+
+	<br> Your Leave Schedule Total Days Should Not Exceed Your Leave Balance.     
+        {% endif %}  
+
+	<!--
+	<strong> Leave Balances</strong> 
+		<table class="mytabo">
+		<tr><td class='mytid'>Annual</td><td class='mytid'>{{ theStaffBalances.lv_annual }}</td></tr>
+		<tr><td class='mytid'>Maternity</td><td class='mytid'>{{ theStaffBalances.lv_maternity }} </td></tr>
+		<tr><td class='mytid'>Paternity</td><td class='mytid'>{{ theStaffBalances.lv_paternity }}</td></tr>
+		<tr><td class='mytid'>Study</td><td class='mytid'>{{ theStaffBalances.lv_study }}
+		<tr><td class='mytid'>Compassion</td><td class='mytid'>{{ theStaffBalances.lv_compassion }}
+		<tr><td class='mytid'>Sick Leave</td><td class='mytid'>{{ theStaffBalances.lv_sick }}
+		</td></tr>
+		</table>
+		<br>
+	-->
+	</td>
+
+	<td width='2px' bgcolor='#888888'>
+	</td>
+
+	<td width=400px>
+	<br>
+	{% if schedExist == 1 %}           
+            <p>Found Leave Schedule <br><br> Cancel The Old Schedule If You Wish To Re-Schedule</p>
+		
+            <p>The Schedule Entry Form Is Currently Hidden</p>
+	{% endif %}
+
+	{% if schedExist == 0 %}
+	<form method="post">
+	<strong>Leave Schedule Form</strong> <br><br>
+
+	    {% csrf_token %}{{ form.date }}
+		<table class="mytabo">
+
+	    {{ form.as_table }}
+
+	      <tr><td><br><button type="submit">Submit Leave Schedule</button></td></tr>
+		</table>
+	</form>
+	{% endif %} 
+
+	</td>
+
+	</tr>
+	</table>
+	</strong>
+        
+	{% if approvalMsg %} <strong>{{approvalMsg}} </strong>{% endif %} 
+	<hr>
+
+        {% if theStaffSchedules %}           
+            <p>Found Leave Schedule</p>
+            <table cellpadding=0>
+		<tr bgcolor='#ccccee'>	
+			<td></td><td>Block 1</td><td>Days</td> <td>Block 2</td><td>Days</td>
+			<td>Block 3</td><td>Days</td><td>Block 4</td><td>Days</td>
+			<td>Block 5</td><td>Days</td><td>Approval Status</td>
+			<td>Cancel</td><td>Details</td>
+		</tr>
+               
+                {% for theStaffSched in theStaffSchedules %}               
+
+                <tr  bgcolor='#eeeeee'>
+		<!-- <td>{{ theStaffSched.id }} </td> -->
+		<td> &nbsp;&nbsp;&nbsp;  <!-- Staff ID : {{ schedd.0.staff_id }}  --></td>
+
+                <td>{{ theStaffSched.sched1_start }}</td>
+                <td>{{ theStaffSched.sched1_days }} </td>
+                <td>{{ theStaffSched.sched2_start }}</td>
+                <td>{{ theStaffSched.sched2_days }} </td>
+                <td>{{ theStaffSched.sched3_start }}</td>
+                <td>{{ theStaffSched.sched3_days }} </td>
+                <td>{{ theStaffSched.sched4_start }}</td>
+                <td>{{ theStaffSched.sched4_days }} </td>
+                <td>{{ theStaffSched.sched5_start }}</td>
+                <td>{{ theStaffSched.sched5_days }} </td>
+
+                <td> <!-- Status {{ theStaffSchedule1..sched_status }} -->
+			{% if theStaffSched.sched_status == 9 %} HOD Approval {% endif %}
+			{% if theStaffSched.sched_status == 8 %} Second Approval {% endif %}
+			{% if theStaffSched.sched_status == 7 %} HR Approval {% endif %}
+			{% if theStaffSched.sched_status == 6 %} Approved {% endif %}
+			{% if theStaffSched.sched_status == 5 %} Cancelled {% endif %}
+		</td>
+
+                {% if boss_lvl == 9 %}<td> 
+		<a href='/lvSchedApproval?id={{ theStaffSched.id }}&lvl=1'> 
+		Approve L1 </a> </td> {% endif%}
+
+                {% if boss_lvl == 8 %}<td> 
+		<a href='/lvSchedApproval?id={{ theStaffSched.id }}&lvl=2'> 
+		Approve L2 </a> </td> {% endif%}
+
+                {% if boss_lvl == 7 %}<td> 
+		<a href='/lvSchedApproval?id={{ theStaffSched.id }}&lvl=3'> 
+		Approve L3 </a> </td> {% endif%}
+
+                <td>{% if boss_lvl > 5 %} <a href='/lvSchedApproval?id={{ theStaffSched.id }}&lvl=c'>Cancel </a> {% endif%}</td>
+                <td> <a href='/lvSchedApprovalDetail?id={{ theStaffSched.id }}&lvl=0'>Details</a> 
+		</td>
+                <!-- {{ book.approval1_dt }} ==
+                {{ book.approval2_dt}} ==
+                {{ book.approval3_dt}} -->
+		</tr> 
+
+              {% endfor %} 
+            </table>       
+        {% else %}           
+            <br><p>There Were No Leave Schedule Records Found For You.</p>       
+        {% endif %}  
+
+	<br>
+
+{% endblock %}

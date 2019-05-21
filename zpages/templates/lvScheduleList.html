@@ -1,0 +1,101 @@
+
+{% extends 'lvBaseManager.html' %}
+<!--  extends 'lvBaseSchedManager.html'  -->
+
+{% block content %}
+
+	<h3>Leave Schedule List : Welcome {{ user.first_name }} [{{ user.username }}] </h3><br>
+	<hr>
+
+<strong>Use This Filter To View Groups of Leave Schedules</strong> <br><br>
+<form method='GET' action='/lvScheduleList/'>
+
+Department
+<select name='deptIdX'>
+  <option value="0">All</option>
+  <option value="1">OFFICE OF THE DVC</option>
+  <option value="2">ADMINISTRATION</option>
+  <option value="3">CENTRE FOR PROFESSIONAL CERT</option>
+  <option value="4">EDUCATION,ARTS AND SOCIAL SCI</option>
+  <option value="5">EXAMINATIONS OFFICE</option>
+  <option value="6">FACULTY OF ICT& ENGINEERING</option>
+  <option value="7">FINANCE</option>
+  <option value="8">OFFICE OF THE CHIEF OO</option>
+  <option value="9">HOSPITALITY AND TOURISM</option>
+  <option value="10">HUMAN RESOURCE</option>
+  <option value="11">INTERNAL AUDIT</option>
+  <option value="12">ICT CENTRE</option>
+  <option value="13">LIBRARY</option>
+  <option value="14">MARKETING & PUBLIC R</option>
+  <option value="15">MEDIA, ARTS AND DESIGN</option>
+  <option value="16">OFFICE OF THE REGISTR</option>
+  <option value="17">OFFICE OF THE VICE CHANCELLOR</option>
+  <option value="18">PROCUREMENT</option>
+  <option value="19">QUALITY ASSURANCE OFFICE</option>
+  <option value="20">RECORDS OFFICE</option>
+  <option value="21">SCHOOL OF BUSINESS & ECONOMICS</option>
+  <option value="23">STORES</option>
+  <option value="24">STUDENT AFFAIRS, PLAC</option>
+  <option value="25">ZETECH DIGITAL SCHOOL</option>
+</select>
+
+Status
+<select name='approvalX'>
+  <option value="0">All</option>
+  <option value="9">Not Approved</option>
+  <option value="8">Approved</option>
+  <option value="5">Cancelled</option>
+</select>
+
+	<input type="submit" value='Filter Leave Schedules'> 
+</form>
+<hr>
+
+        {% if lvScheds %}           
+            <p>Found {{ lvScheds|length }} Leave Schedule{{ lvScheds|pluralize }}.</p>
+            <table  id="result_list" >
+		<tr class="row2">	
+			<td>StaffID</td><td>Block 1</td><td>Duration</td>
+			<td>Block 2</td><td>Days</td><td>Block 3</td><td>Days</td>
+			<td>Block 4</td><td>Days</td><td>Block 5</td><td>Days</td><td>Status</td>
+			<!-- td>Cancelled</td --><td>Link</td>
+		</tr>
+               
+                {% for schedd in lvScheds %}               
+                <tr>
+		<!-- <td>{{ schedd.id }} </td> -->
+		<td>{{ schedd.staff_id }} </td>
+
+                <td>{{ schedd.sched1_start }}</td>
+                <td>{{ schedd.sched1_days }} </td>
+                <td>{{ schedd.sched2_start }}</td>
+                <td>{{ schedd.sched2_days }} </td>
+                <td>{{ schedd.sched3_start }}</td>
+                <td>{{ schedd.sched3_days }} </td>
+                <td>{{ schedd.sched4_start }} </td>
+                <td>{{ schedd.sched4_days }} </td>
+                <td>{{ schedd.sched5_start }} </td>
+                <td>{{ schedd.sched5_days }} </td>
+
+                <td> <!-- Status {{ schedd.sched_status }} -->
+			{% if schedd.sched_status == 9 %} HOD Approval {% endif %}
+			{% if schedd.sched_status == 8 %} Approved {% endif %}
+			{% if schedd.sched_status == 6 %} Approved {% endif %}
+			{% if schedd.sched_status == 5 %} Cancelled {% endif %}
+		<!-- <td>
+		<a href='/lvSchedApproval?id={{ schedd.id }}&lvl=c' onclick="return confirm('Are you sure you want to Cancel?');">Cancel </a> 
+		</td> -->
+                <td> <a href='/lvSchedApprovalDetail?id={{ schedd.id }}&lvl=0'>Details</a> </td>
+		</tr> 
+              
+                {% endfor %}           
+            </table>       
+        {% else %}           
+            <p>No Results matched your search criteria.</p>       
+        {% endif %}  
+	<hr>
+  
+    <!-- </body>
+	</html> -->
+
+{% endblock %}

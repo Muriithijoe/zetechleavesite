@@ -1,0 +1,43 @@
+
+
+{% extends 'lvBaseManager.html' %}
+
+{% block content %}
+
+<h3>Edit Staff Leave Balances </h3>
+
+Staff ID:   {{ theStaff.staff_id }}<br>
+Name :  {{ theStaff.first_name }} {{ theStaff.last_name }}<br>
+Position :  {{ theStaff.position }}<br><br>
+
+<!--
+	<form method="post">
+	    {% csrf_token %}
+	    {{ form.as_p }}
+
+	    <div class="form-actions">
+	      <button type="submit">Send</button>
+	    </div>
+	</form>
+-->
+
+	<form method="get" action="/BalanceEdit">
+
+	Annual <input type="text" name="BalAnnual" value="{{ staffBal.lv_annual }}"><br>
+	Maternity <input type="text" name="BalMaternity" value="{{ staffBal.lv_maternity }}"> <br>
+	Paternity <input type="text" name="BalPaternity" value="{{ staffBal.lv_paternity }}"><br>
+	Study <input type="text" name="BalStudy" value="{{ staffBal.lv_study }}"> <br>
+	Compassion <input type="text" name="BalCompassion" value="{{ staffBal.lv_compassion }}"> <br>
+	Sick <input type="text" name="BalSick" value="{{ staffBal.lv_sick }}"><br><br>
+	
+	Staff ID <input type="hidden" name="targetStaff" value="{{ theStaff.id }}"><br>
+
+	<input type = 'submit' value ="Save The Approvers"><br><br>
+	</form>
+
+
+<br>
+<br>
+
+{% endblock %}
+

@@ -1,0 +1,139 @@
+
+<html>     
+    <head>         
+    <title>Summary of Individual Staff Leave Information</title>     
+    </head>     
+    <body>  
+
+	<h1> Summary of Individual Staff : Leave Information</h1>
+	<p>Welcome {{ myUser.first_name }}..{{ myUser.last_name }} Approval Level</td><td>{{ boss_lvl }}</P>
+	<hr> 
+	<strong>
+	<table bgcolor='#cccccc'><tr><td width=250px>
+	<table>
+		<tr><td>Staff ID</td><td>{{ theStaff.staff_id }}</td></tr>
+		<tr><td>Name</td><td>{{ theStaff.first_name }}..{{ theStaff.last_name }} </td></tr>
+		<tr><td>Email</td><td>{{ theStaff.email }}</td></tr>
+		<tr><td>Position</td><td>{{ theStaff.position }}</td></tr>
+	</table>
+	</td>
+
+	<td width=220px>
+<p>The Staff Leave Balances</p>
+		<table>
+		<tr><td>Annual</td><td>{{ theStaffBalances.lv_annual }}</td></tr>
+		<tr><td>Maternity</td><td>{{ theStaffBalances.lv_maternity }} </td></tr>
+		<tr><td>Paternity</td><td>{{ theStaffBalances.lv_paternity }}</td></tr>
+		<tr><td>Study</td><td>{{ theStaffBalances.lv_study }}
+		</td></tr>
+		</table>
+	</td>
+	<td width=250px> 
+	
+        {% if theStaffSchedule %}           
+           <strong> Leave Schedule </strong>  
+            <table>               
+                <tr>
+		<td> <!--  {{theStaffSchedule.id }}  --></td>
+		</tr>
+
+		<!--<tr><td>Staff ID : {{ theStaffSchedule.staff_id }} </td>
+			<td></td>
+                </tr> -->
+
+		<tr><td>{{ theStaffSchedule.sched1_days }} Days </td>
+                	<td>Starting {{ theStaffSchedule.sched1_start }}</td>
+                </tr><tr><td>{{ theStaffSchedule.sched2_days }} Days </td>
+                	<td>Starting {{ theStaffSchedule.sched2_start }}</td>
+                </tr><tr><td>{{ theStaffSchedule.sched3_days }} Days </td>
+                	<td>Starting {{ theStaffSchedule.sched3_start }}</td>
+		</tr> 
+            </table>       
+      
+        {% else %}           
+            <p>The Leave Schedule For This Staff Was Not Found ...</p>       
+        {% endif %}  
+	</td>
+	</tr>
+	</table>
+
+  	</strong>
+    
+	<hr>
+        {% if lvCancelleds %}           
+            <p>Found <strong> {{ lvCancelleds|length }} Cancelled Applications{{ lvCancelleds|pluralize }} This Staff </strong> </p>
+            <table  bgcolor='#dddddd'>               
+                {% for cncdAppn in lvCancelleds %}               
+                <tr>
+		<!-- <td>{{ cncdAppn.id }}..</td> -->
+		<td>Staff ID:{{ cncdAppn.staff_id }}..</td>
+		<td>:{{ cncdAppn.second_name }}..</td>
+                <td>Leave Type :{{ cncdAppn.lv_type }} ..</td>
+                <td>Days :{{ cncdAppn.lv_days }} ...</td>
+                <td>Approval 1:{{ cncdAppn.approval1 }} ..</td>
+                <td>Deducted:{{ cncdAppn.deducted }}...</td>
+                <td>Cancelled:{{ cncdAppn.cancelled }}...</td>
+                <!-- <td>Approval Date :{{ cncdAppn.approval1_dt }}</td> -->
+
+                <td> <a href='/lvApprovalDetail?id={{ cncdAppn.id }}&lvl=0&user_id={{ myUser.staff_id }}'>See Details</a> </td>
+
+		</tr> 
+                {% endfor %}           
+            </table>       
+        {% else %}           
+            <p>No Cancelled Leave Applications Were Found</p>       
+        {% endif %}     
+
+	<hr>
+        {% if approvedLvs %}           
+            <p><strong>  Found {{ approvedLvs|length }} Approved Leave Applications{{ approvedLvs|pluralize }}.</strong> </p>
+            <table  bgcolor='#eeeeee'>               
+                {% for cncdAppn in approvedLvs %}               
+                <tr>
+		<!-- <td>{{ cncdAppn.id }}..</td> -->
+		<td>Staff ID:{{ cncdAppn.staff_id }}..</td>
+		<td>:{{ cncdAppn.second_name }}..</td>
+                <td>Leave Type :{{ cncdAppn.lv_type }} ..</td>
+                <td>Days :{{ cncdAppn.lv_days }} ...</td>
+                <td>Approval 1:{{ cncdAppn.approval1 }} ..</td>
+                <td>Deducted:{{ cncdAppn.deducted }}...</td>
+                <td>Cancelled:{{ cncdAppn.cancelled }}...</td>
+                <!-- <td>Approval Date :{{ cncdAppn.approval1_dt }}</td> -->
+
+                <td> <a href='/lvApprovalDetail?id={{ cncdAppn.id }}&lvl=0&user_id={{ myUser.staff_id }}'>See Details</a> </td>
+
+		</tr> 
+                {% endfor %}           
+            </table>       
+        {% else %}           
+            <p>No Approved Leave Applications Were Found</p>       
+        {% endif %}     
+
+	<hr>
+        {% if pendingLvs %}           
+            <p><strong> Found {{ pendingLvs|length }} Pending Leave Applications{{ pendingLvs|pluralize }}.</strong> </p>
+            <table bgcolor='#dddd00'>               
+                {% for pdngAppn in pendingLvs %}               
+                <tr>
+		<!-- <td>{{ pdngAppn.id }}..</td> -->
+		<td>Staff ID:{{ pdngAppn.staff_id }}..</td>
+		<td>:{{ pdngAppn.second_name }}..</td>
+                <td>Leave Type :{{ pdngAppn.lv_type }} ..</td>
+                <td>Days :{{ pdngAppn.lv_days }} ...</td>
+                <td>Approval 1:{{ pdngAppn.approval1 }} ..</td>
+                <td>Deducted:{{ pdngAppn.deducted }}...</td>
+                <td>Cancelled:{{ pdngAppn.cancelled }}...</td>
+                <!-- <td>Approval Date :{{ pdngAppn.approval1_dt }}</td> -->
+
+                <td> <a href='/lvApprovalDetail?id={{ pdngAppn.id }}&lvl=0&user_id={{ myUser.staff_id }}'>See Details</a> </td>
+
+		</tr> 
+                {% endfor %}           
+            </table>       
+        {% else %}           
+            <p>No Pending Leave Applications Were Found</p>       
+        {% endif %}     
+   
+
+    </body>
+</html>

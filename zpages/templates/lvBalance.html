@@ -1,0 +1,112 @@
+
+{% extends 'lvBaseManager.html' %}
+<!-- extends 'lvBaseSchedManager.html'  -->
+
+{% block content %}
+      
+        <p>LEAVES BALANCES: <strong>{{ query }}</strong></p>
+   
+<form method='GET' action='/lvBalance/'>
+
+Leave Type
+
+Department
+<select name='deptIdX'>
+  <option value="0">All</option>
+  <option value="1">OFFICE OF THE DVC</option>
+  <option value="2">ADMINISTRATION</option>
+  <option value="3">CENTRE FOR PROFESSIONAL CERT</option>
+  <option value="4">EDUCATION,ARTS AND SOCIAL SCI</option>
+  <option value="5">EXAMINATIONS OFFICE</option>
+  <option value="6">FACULTY OF ICT& ENGINEERING</option>
+  <option value="7">FINANCE</option>
+  <option value="8">OFFICE OF THE CHIEF OO</option>
+  <option value="9">HOSPITALITY AND TOURISM</option>
+  <option value="10">HUMAN RESOURCE</option>
+  <option value="11">INTERNAL AUDIT</option>
+  <option value="12">ICT CENTRE</option>
+  <option value="13">LIBRARY</option>
+  <option value="14">MARKETING & PUBLIC R</option>
+  <option value="15">MEDIA, ARTS AND DESIGN</option>
+  <option value="16">OFFICE OF THE REGISTR</option>
+  <option value="17">OFFICE OF THE VICE CHANCELLOR</option>
+  <option value="18">PROCUREMENT</option>
+  <option value="19">QUALITY ASSURANCE OFFICE</option>
+  <option value="20">RECORDS OFFICE</option>
+  <option value="21">SCHOOL OF BUSINESS & ECONOMICS</option>
+  <option value="23">STORES</option>
+  <option value="24">STUDENT AFFAIRS, PLAC</option>
+  <option value="25">ZETECH DIGITAL SCHOOL</option>
+
+</select>
+<select name='lvTypeX'>
+  <option value="0">All</option>
+  <option value="1">Annual</option>
+  <option value="2">Maternity</option>
+  <option value="3">Paternity</option>
+  <option value="4">Compassion</option>
+  <option value="5">Study</option>
+</select>
+
+Status
+<select name='approvalX'>
+  <option value="0">All</option>
+  <option value="9">Not Approved</option>
+  <option value="8">Approved Level 1</option>
+  <option value="7">Approved Level 2</option>
+  <option value="6">Approved Level 3</option>
+  <option value="5">Cancelled</option>
+</select>
+
+	<input type="submit" value='Filter'> 
+</form>
+	<hr>
+
+
+
+        {% if lvBals %}           
+            <p>Found {{ lvBals|length }} Leave Balance{{ lvBals|pluralize }}.</p>
+            <table callpadding=2 >
+		<tr bgcolor='#ccccee'>	
+			<td>Staff ID</td><td>Name</td><td>Annual</td>
+			<td>Maternity</td><td>Paternity</td><td>Study</td><td>Compassion</td>
+			<td>Sick</td><td>Other 2</td><td>Link</td><td>.</td><td>.</td>
+			
+		</tr>
+                {% for xrow in lvBals %}   
+            
+                <tr   bgcolor='#eeeeee'>
+		<td>{{ xrow.staff_id }}.. </td>
+		<td>{{ xrow.first_name }}</td>
+		<!-- td>{{ xrow.last_name }}</td  -->
+
+		{% for myb in xrow.lvbalances_set.all %}  
+                	<td><!-- {{ myb.staff_id }}  -->
+			{{ myb.lv_annual }}</td>
+                	<td>{{ myb.lv_maternity }}</td>
+                	<td>{{ myb.lv_paternity  }}</td>
+                	<td>{{ myb.lv_study }} </a></td>
+                	<td>{{ myb.lv_compassion  }}</td>
+               	 	<td>{{ myb.lv_sick }}</td>
+               		<td> {{ myb.lv_other2 }} </td>
+    		  {% endfor %}
+
+                <td> 
+		{% if boss_lvl != 9 %}<a href='/BalanceEdit/?staff_id={{ xrow.id }}&lvl=2'> 
+		{% endif%}Edit {% if boss_lvl == 8 %}</a> {% endif%}</td>
+		<td>
+		{% if boss_lvl != 9 %}<a href='/BalanceCopy/?staff_id={{ xrow.id }}&lvl=2'> 
+		{% endif%}Copy {% if boss_lvl == 8 %}</a> {% endif%}</td>
+
+
+		<td> <a href='/lvStaffSummary/?staff_id={{ xrow.staff_id }}&lvl=2'>More</a></td>
+		</tr>
+              
+                {% endfor %}           
+            </table>       
+        {% else %}           
+            <p>No Results matched your search criteria.</p>       
+        {% endif %}  
+
+
+{% endblock %}

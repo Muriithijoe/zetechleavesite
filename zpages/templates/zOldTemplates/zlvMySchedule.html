@@ -1,0 +1,127 @@
+
+<html>     
+    <head>  
+
+	{% load static %}
+	<script type="text/javascript" src="{% static 'jquery-3.3.1.min.js' %}"></script> 
+	<script type="text/javascript" src="{% static 'jquery-3.3.1.js' %}">
+	</script> 
+	<script type="text/javascript" src="{% static '\jqueryui\jquery-ui.js' %}"></script> 
+
+	<!-- Make sure that the jQuery name is correct. With updates and different versions, 
+	the number after 'jquery' will change  -->
+
+ /* Include the jquery Ui here */
+ <script>
+  $(function() {
+    //$( "#id_myDate" ).datepicker(); 
+    $( ".datepicker" ).datepicker();  
+  });
+$.datepicker.setDefaults({
+  showOn: "both",
+  buttonImageOnly: true,
+  buttonImage: "calendar.gif",
+  buttonText: "Date"
+});
+  </script>
+ 	      
+    <title>Online Leave Application</title>     
+    </head>     
+    <body>       
+    <h1>Online Leave Application</h1>
+     
+        <p>Welcome {{ query.first_name }} : Online Leave Application <strong>
+
+	<table bgcolor='#cccccc'><tr><td>
+	<table>
+		<tr><td>Staff ID</td><td>{{ query.staff_id }}</td></tr>
+		<tr><td>Name</td><td>{{ query.first_name }}..{{ query.last_name }} </td></tr>
+		<tr><td>Email</td><td>{{ query.email }}</td></tr>
+		<tr><td>Position</td><td>{{ query.position }}</td></tr>
+	</table>
+	</td><td width=150px> </td>
+	<td>
+
+	<p>Your Personal Leave Balances Are</p>
+		<table>
+		<tr><td>ANNUAL</td><td>{{ myLvBals.lv_annual }}</td></tr>
+		<tr><td>MATERNITY</td><td>{{ myLvBals.lv_maternity }} </td></tr>
+		<tr><td>PATERNITY</td><td>{{ myLvBals.lv_paternity }}</td></tr>
+		<tr><td>STUDY</td><td>{{ myLvBals.lv_study }}</td></tr>
+	</table>
+	</tr></table>
+   
+	{% if saveMsg %} 
+		<br><strong>{{saveMsg}}</strong>
+	{% endif %}
+
+	<hr>
+
+        <p>LEAVE SCHEDULES PENDING APPROVAL: <strong>{{ query }}</strong></p>
+   
+	{% if approvalMsg %} <strong>{{approvalMsg}} </strong>{% endif %} 
+	<hr>
+
+        {% if lvScheds %}           
+            <p>Found {{ lvScheds|length }} Leave Schedule{{ lvScheds|pluralize }}.</p>
+            <table>               
+                {% for schedd in lvScheds %}               
+                <tr>
+		<!-- <td>{{ schedd.id }} </td> -->
+		<td>Staff ID : {{ schedd.staff_id }} </td>
+                <td>Leave Type: {{ schedd.lv_type }} </td>
+                <td>Days Applied :{{ schedd.lv_days }} </td>
+                <td>Status {{ schedd.approval1 }}
+
+		{% if boss_lvl == 9 %}<a href='/lvSchedApproval?id={{ schedd.id }}&lvl=1&user_id={{ user_id }}'> 
+		{% endif%}Approve L1 {% if boss_lvl == 9 %}</a> {% endif%}</td>
+
+		</td>
+                <td> 
+		{% if boss_lvl == 8 %}<a href='/lvSchedApproval?id={{ schedd.id }}&lvl=2&user_id={{ user_id }}'> 
+		{% endif%}Approve L2 {% if boss_lvl == 8 %}</a> {% endif%}</td>
+
+                <td> 
+		{% if boss_lvl == 7 %}<a href='/lvSchedApproval?id={{ schedd.id }}&lvl=3&user_id={{ user_id }}'> 
+		{% endif%}Approve L3 {% if boss_lvl == 7 %}</a> {% endif%}</td>
+
+                <td>Cancelled : {{ book.cancelled}} ...<a href='/lvSchedApproval?id={{ schedd.id }}&lvl=c&user_id={{ user_id }}'>Cancel </a> </td>
+                <td> <a href='/lvSchedApprovalDetail?id={{ schedd.id }}&lvl=0&user_id={{ user_id }}'>Details</a> </td>
+                <!-- {{ book.approval1_dt }} ==
+                {{ book.approval2_dt}} ==
+                {{ book.approval3_dt}} -->
+		</tr> 
+              
+                {% endfor %}           
+            </table>       
+        {% else %}           
+            <p>No Results matched your search criteria.</p>       
+        {% endif %}  
+	<hr>
+	
+	<table bgcolor='#cccccc'>
+	<tr><td>
+         {% if lvApps %}           
+            <p>Found {{ lvApps|length }} Leave Application{{ lvApps|pluralize }}.</p>
+		<p>Do Not Apply For Same Leave Type. <br>First Delete (Cancel The Pending Leave <br> Applications)</p>
+		<br><br><br><br>
+	{% endif %}
+	</td>
+	<td width=100px> </td>
+	<td width=300px>
+
+	<h3>Enter Leave Schedule</h3>
+
+	<form width='900px' method="post">
+Schedule Form <br>
+
+	    {% csrf_token %}{{ form.date }}
+	    {{ form.as_table }}
+
+	      <button type="submit">Send</button>
+	</form>
+	</td>
+	</tr></table>
+
+    </body>
+</html>

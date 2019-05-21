@@ -1,0 +1,61 @@
+
+{% extends 'lvBaseManager.html' %}
+<!-- extends 'lvBaseSchedManager.html'  -->
+
+{% block content %}
+      
+        <p>ACTIVITY LOGS : <strong>{{ query }}</strong></p>
+   
+<form method='GET' action='/lvLogView/'>
+
+<select name='lvTypeX'>
+  <option value="0">All</option>
+  <option value="1">Annual</option>
+  <option value="2">Maternity</option>
+  <option value="3">Paternity</option>
+  <option value="4">Compassion</option>
+  <option value="5">Study</option>
+</select>
+
+Status
+<select name='approvalX'>
+  <option value="0">All</option>
+  <option value="9">Not Approved</option>
+  <option value="8">Approved Level 1</option>
+  <option value="7">Approved Level 2</option>
+  <option value="6">Approved Level 3</option>
+  <option value="5">Cancelled</option>
+</select>
+
+	<input type="submit" value='Filter'> 
+</form>
+	<hr>
+
+
+
+        {% if lvLogs %}           
+            <p>Found {{ lvLogs|length }} Leave Balance{{ lvLogs|pluralize }}.</p>
+            <table callpadding=2 >
+		<tr bgcolor='#ccccee'>	
+			<td>ID</td><td>Staff ID</td><td>Name</td><td>Activity</td><td>Link</td>
+			
+		</tr>
+                {% for xrow in lvLogs %}   
+            
+                <tr   bgcolor='#eeeeee'>
+		<td>{{ xrow.id }}.. </td>
+		<td>{{ xrow.staff_id }}.. </td>
+		<td>{{ xrow.xtrainfo }}</td>
+		<td>{{ xrow.xtrainfo2 }}</td>
+
+		<td> <a href='/lvStaffSummaryxx/?staff_id={{ xrow.staff_id }}&lvl=2'>More ...</a></td>
+		</tr>
+              
+                {% endfor %}           
+            </table>       
+        {% else %}           
+            <p>No Results matched your search criteria.</p>       
+        {% endif %}  
+
+
+{% endblock %}

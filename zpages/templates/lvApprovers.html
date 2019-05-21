@@ -1,0 +1,81 @@
+{% extends 'lvBaseManager.html' %}
+
+{% block content %} 
+
+<form method=get action ='/Approvers' >
+
+Select Department
+<select name='dept_id'>
+  <option value="0">All</option>
+  <option value="1">OFFICE OF THE DVC</option>
+  <option value="2">ADMINISTRATION</option>
+  <option value="3">CENTRE FOR PROFESSIONAL CERT</option>
+  <option value="4">EDUCATION,ARTS AND SOCIAL SCI</option>
+  <option value="5">EXAMINATIONS OFFICE</option>
+  <option value="6">FACULTY OF ICT& ENGINEERING</option>
+  <option value="7">FINANCE</option>
+  <option value="8">OFFICE OF THE CHIEF OO</option>
+  <option value="9">HOSPITALITY AND TOURISM</option>
+  <option value="10">HUMAN RESOURCE</option>
+  <option value="11">INTERNAL AUDIT</option>
+  <option value="12">ICT CENTRE</option>
+  <option value="13">LIBRARY</option>
+  <option value="14">MARKETING & PUBLIC R</option>
+  <option value="15">MEDIA, ARTS AND DESIGN</option>
+  <option value="16">OFFICE OF THE REGISTR</option>
+  <option value="17">OFFICE OF THE VICE CHANCELLOR</option>
+  <option value="18">PROCUREMENT</option>
+  <option value="19">QUALITY ASSURANCE OFFICE</option>
+  <option value="20">RECORDS OFFICE</option>
+  <option value="21">SCHOOL OF BUSINESS & ECONOMICS</option>
+  <option value="23">STORES</option>
+  <option value="24">STUDENT AFFAIRS, PLAC</option>
+  <option value="25">ZETECH DIGITAL SCHOOL</option>
+</select>
+
+<input type='submit' value ='Filter'>
+
+</form>
+        <strong>Welcome {{ myUser.last_name }} : Leave Approvers Listing </strong>
+ 	{% if allApprovers %}  Found {{ allApprovers|length }} Record{{ allApprovers|pluralize }}</p>{% endif %}
+   
+        {% if allApprovers %}           
+           <table>   
+		<tr bgcolor='#ccccee'>	
+			<td>Staff ID</td><td>Staff ID</td><td>Position</td> <td>Approver1</td>
+<td>Approver2</td><td>Approver3</td><td>Action</td><td>Action 2</td>
+		</tr>
+            
+                {% for approva in allApprovers %} 
+		             
+                <tr   bgcolor='#eeeeee'>
+		<td>{{ approva.staff_id }} <!-- {{ approva.dept_id }} --> </td>
+                <td>{{ approva.first_name }} {{ approva.last_name }} </td>
+                <td>{{ approva.position }} </td>
+		<td>{% for myp in approva.lvapprovers_set.all %}  
+                	{{ myp.approver1_id }} 
+			</td>
+                <td>{{ myp.approver2_id }} </td>
+                <td>{{ myp.approver3_id }} </td>
+		</td>
+		{% endfor %}
+                <td> 
+		{% if boss_lvl == 9 %}<a href='/ApproverEdit?staff_id={{ approva.id }}&lvl=2'> 
+		{% endif%}Edit {% if boss_lvl == 8 %}</a> {% endif%}</td>
+		<td>
+		{% if boss_lvl == 9 %}<a href='/ApproversCopy?staff_id={{ approva.id }}&lvl=2'> 
+		{% endif%}Copy Approvers {% if boss_lvl == 8 %}</a> {% endif%}</td>
+
+                <!-- <td> <a href='/lvApproverSummary?staff_id={{ approva.id }}&lvl=c'> Summary List </a> </td> -->
+		</tr> 
+              
+                {% endfor %}           
+            </table>       
+        {% else %}           
+            <p>No Results For Main Leave Listing Were Found</p>       
+        {% endif %} 
+
+    
+    <!-- </body></html> -->
+
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'lvBaseSchedManager.html' %}
+
+{% block content %}
+
+	<h3> Leave Schedule Approvals <br><br> Welcome  {{ myUser.first_name }}  [{{ user.username }}] </h3>
+	{% if approvalMsg %} <strong><font color='#f00'>{{approvalMsg}} </font></strong>{% endif %} 
+
+	<br>You May Approve By Clicking the Icon 
+	<img src="/zpages/static/admin/img/icon-yes.svg"> OR Cancel The Application By Clicking the Icon 
+	<img src="/zpages/static/admin/img/icon-no.svg"> <br> You May Wish To See the Individual Schedule Details
+	 By Clicking the Icon <img src="/zpages/static/admin/img/icon-changelink.svg"> <br><br>
+
+	<hr>
+        {% if lvScheds %}           
+            <p>Found {{ lvScheds|length }} Leave Schedule{{ lvScheds|pluralize }} For Your Approval </p>
+
+        <small>
+	<table id="result_list" >
+		<tr bgcolor='#ccccee'>	
+			<td>StaffID</td><td>Block 1</td><td>Days</td>
+			<td>Block 2</td><td>Days</td><td>Block 3</td><td>Days</td>
+			<td>Block 4</td><td>Days</td><td>Block 5</td><td>Days</td><td>Approval Status</td>
+			<td>Action</td><td>Cancelled</td><td>Link</td>
+		</tr>
+                {% for schedd in lvScheds %}  
+
+                <tr  bgcolor='#eeeeee' class="row1">
+
+		<!-- <td>{{ schedd.id }} </td> -->
+		<td>{{ schedd.staff_id }}</td>
+
+                <td>{{ schedd.sched1_start }}</td>
+                <td>{{ schedd.sched1_days }} </td>
+                <td>{{ schedd.sched2_start }}</td>
+                <td>{{ schedd.sched2_days }} </td>
+                <td>{{ schedd.sched3_start }}</td>
+                <td>{{ schedd.sched3_days }} </td>
+                <td>{{ schedd.sched4_start }} </td>
+                <td>{{ schedd.sched4_days }} </td>
+                <td>{{ schedd.sched5_start }} </td>
+                <td>{{ schedd.sched5_days }} </td>
+
+                <td> <!-- Status {{ schedd.sched_status }} -->
+			{% if schedd.sched_status == 9 %} HOD Approval {% endif %}
+			{% if schedd.sched_status == 8 %} Second Approval {% endif %}
+			{% if schedd.sched_status == 7 %} HR Approval {% endif %}
+			{% if schedd.sched_status == 6 %} Approved {% endif %}
+			{% if schedd.sched_status == 5 %} Cancelled {% endif %}
+		</td>
+
+		{% if boss_lvl == 9 %}
+		<td>
+		<a href='/lvSchedApproval?id={{ schedd.id }}&lvl=1'  onclick="return confirm('Are you sure you want to Approve?');"> 
+		Approve <img src="http://localhost:8000/zpages/static/admin/img/icon-yes.svg"></a> </td>{% endif%}
+
+                <td><a href='/lvSchedApproval?id={{ schedd.id }}&lvl=c'  onclick="return confirm('Are you sure you want to Cancel ?');">
+		Cancel  <img src="http://localhost:8000/zpages/static/admin/img/icon-no.svg"> </a> </td>
+
+                <td> <a href='/lvSchedApprovalDetail?id={{ schedd.id }}&lvl=0'>
+		Details  <img src="http://localhost:8000/zpages/static/admin/img/icon-changelink.svg"> </a> </td>
+                <!-- {{ book.approval1_dt }} ==
+                {{ book.approval2_dt}} ==
+                {{ book.approval3_dt}} -->
+		</tr> 
+              
+                {% endfor %}           
+            </table>       
+        {% else %}           
+            <p><br>No Leave Schedules Were Found For Your Approval.</p>       
+        {% endif %} 
+
+	</small>
+
+    <!-- </body></html> -->
+
+{% endblock %}

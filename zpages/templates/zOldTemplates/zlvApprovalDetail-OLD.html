@@ -1,0 +1,65 @@
+
+<html>     
+    <head>         
+    <title>LEAVE APPLICATIONS PENDING APPROVAL:</title>     
+    </head>     
+    <body>  
+
+	<h1> Approval Of Leave</h1>
+	<hr> 
+	<strong>
+  	{{ myUser.id }}..{{ myUser.staff_id }} <br>{{ myUser.first_name }}..{{ myUser.last_name }}..<br>
+	{{ myUser.phone_number }}..{{ myUser.email }}..<br>{{ myUser.position }}..
+	</strong>
+     
+	<hr>
+	{% if saveMsg %} <strong>{{saveMsg}} </strong>{% endif %} 
+	<hr>
+	The Last Approval <br>
+        {% if theAppn %}           
+            <p>The Leave Application Details For Your Approval</p>
+            <ul>               
+                <li>
+		<!-- {{ theAppn.id }}.. -->
+		Staff ID: {{ theAppn.staff_id }}..
+                Leave Type: {{ theAppn.lv_type }} ..
+                Leave Days: {{ theAppn.lv_days }} ...
+                Status {{ theAppn.approval1 }}...<a href='/lvApproval?id={{ theAppn.id }}&lvl=1&user_id={{ user_id }}'>Approve 1</a>
+                {{ theAppn.cancelled}} ...<a href='/lvApprovalDetail?id={{ theAppn.id }}&lvl=c&user_id={{ user_id }}'>Cancel</a>
+                {{ theAppn.approval1_dt }} ==
+              <!--  {{ theAppn.approval2_dt}} ==
+                {{ theAppn.approval3_dt}} --> </li> 
+              
+            </ul>       
+        {% else %}           
+            <p>The Application For Approval Has An Issue ...</p>       
+        {% endif %}     
+
+	<hr><br>
+        <p>LEAVES PENDING APPROVAL: <strong>{{ query }}</strong></p>
+   
+        {% if lvApps %}           
+            <p>Found {{ lvApps|length }} Leave Application{{ lvApps|pluralize }}.</p>
+            <ul>               
+                {% for book in lvApps %}               
+                <li>
+		{{ book.id }}..
+		{{ book.staff_id }}..
+                {{ book.lv_type }} ..
+                {{ book.lv_days }} ...
+                Status {{ book.approval1 }}...<a href='/lvApproval?id={{ book.id }}&lvl=1&user_id={{ user_id }}'>Approve 1</a>
+                Status {{ book.approval2 }}...<a href='/lvApproval?id={{ book.id }}&lvl=2&user_id={{ user_id }}'>Approve 2</a>
+                Status {{ book.approval3 }}...<a href='/lvApproval?id={{ book.id }}&lvl=3&user_id={{ user_id }}'>Approve 3</a>
+                {{ book.cancelled}} ...<a href='/lvApproval?id={{ book.id }}&lvl=c&user_id={{ user_id }}'>Cancel</a>
+                ...<a href='/lvApprovalDetail?id={{ book.id }}&lvl=c&user_id={{ user_id }}'>Details</a>
+                <!-- {{ book.approval1_dt }} ==
+                {{ book.approval2_dt}} ==
+                {{ book.approval3_dt}} --></li> 
+              
+                {% endfor %}           
+            </ul>       
+        {% else %}           
+            <p>No Results matched your search criteria.</p>       
+        {% endif %}     
+    </body>
+</html>

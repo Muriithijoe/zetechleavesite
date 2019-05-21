@@ -1,0 +1,50 @@
+{% extends 'lvBaseManager.html' %}
+
+{% block content %} 
+
+<a href='/xamApprovers/'> Make Approvers </a><br><br>
+
+<form method=get action ='/Approvers' >
+
+Select Department
+<select name='dept_id'>
+  <option value="1">Administration</option>
+  <option value="2">ICT & Engineering</option>
+  <option value="3">Business</option>
+  <option value="4">Hospitality</option>
+  <option value="5">Other</option>
+  <option value="0">All</option>
+</select>
+<input type='submit' value ='Filter'>
+
+</form>
+        <strong>Welcome {{ myUser.last_name }} : Leave Approvers Listing </strong>
+ 	{% if myClass %}  Found {{ myClass|length }} Records{{ myClass|pluralize }}</p>{% endif %}
+   
+        {% if myClass %}           
+           <table>   
+		<tr bgcolor='#ccccee'>	
+			<td>Student ID</td><td>Assignment1</td>
+			<td>Assignment2</td><td>CAT 1</td><td>CAT 2</td>
+		</tr>
+            
+                {% for approva in myClass %}               
+                <tr   bgcolor='#eeeeee'>
+                <td>{{ approva.0 }} </td>
+                <td>{{ approva.1 }} </td>
+                <td>{{ approva.2 }} </td>
+                <td>{{ approva.3 }} </td>
+                <td>{{ approva.4 }} </td>
+		</td>
+		</tr> 
+              
+                {% endfor %}           
+            </table>       
+        {% else %}           
+            <p>No Results For Main Leave Listing Were Found</p>       
+        {% endif %} 
+
+    
+    <!-- </body></html> -->
+
+{% endblock %}

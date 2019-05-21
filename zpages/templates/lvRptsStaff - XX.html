@@ -1,0 +1,67 @@
+{% extends 'lvBase.html' %}
+
+{% block content %}
+
+        <p>Leave Reports : Staff <strong>
+   
+        {% if lvApplicationList %}           
+            <p>Found {{ lvApplicationList|length }} Approved {{ lvApplicationList|pluralize }}.</p>
+            <ul>               
+                {% for lvAppn in lvApplicationList %}               
+                <li>
+		{{ lvAppn.id }}..
+		Staff ID...{{ lvAppn.staff_id }}..
+                LeaveType ...{{ lvAppn.lv_type }} ..
+                Leave Days...{{ lvAppn.lv_days }} ...
+                Approval 1..{{ lvAppn.approval1 }}...
+                Approval 2..{{ lvAppn.approval2 }}...
+                Approval 3..{{ lvAppn.approval3 }}...
+                <!-- {{ lvAppn.approval1_dt }} ==
+                {{ lvAppn.approval2_dt}} ==
+                {{ lvAppn.approval3_dt}} --> </li> 
+              
+                {% endfor %}           
+            </ul>       
+        {% else %}           
+            <p>No Results APPROVED THIS MONTH matched your search criteria.</p>       
+        {% endif %}     
+
+        {% if lvStaffList %}           
+            <p>Found {{ lvStaffList|length }} Approved {{ lvStaffList|pluralize }}.</p>
+            <ul>               
+                {% for lvAppn in lvStaffList %}               
+                <li>
+		{{ lvAppn.id }}..
+		Staff ID...{{ lvAppn.staff_id }}..
+                User ID ...{{ lvAppn.user_id }} ..
+                Password...{{ lvAppn.password }} ...
+                UserStatus..{{ lvAppn.user_status }}...
+                <!-- {{ lvAppn.approval1_dt }} ==
+                {{ lvAppn.approval2_dt}} ==
+                {{ lvAppn.approval3_dt}} --> </li> 
+              
+                {% endfor %}           
+            </ul>       
+        {% endif %}     
+
+        {% if lvCancelledAMonth %}           
+            <p>Found {{ lvCancelledAMonth|length }} Approved {{ lvCancelledAMonth|pluralize }}.</p>
+            <ul>               
+                {% for lvAppn in lvCancelledAMonth %}               
+                <li>
+		{{ lvAppn.id }}..
+		Staff ID...{{ lvAppn.staff_id }}..
+                LeaveType ...{{ lvAppn.lv_type }} ..
+                Leave Days...{{ lvAppn.lv_days }} ...
+                Approval 1..{{ lvAppn.approval1 }}...
+                Approval 2..{{ lvAppn.approval2 }}...
+                Approval 3..{{ lvAppn.approval3 }}...
+                <!-- {{ lvAppn.approval1_dt }} ==
+                {{ lvAppn.approval2_dt}} ==
+                {{ lvAppn.approval3_dt}} --> </li> 
+              
+                {% endfor %}           
+            </ul>       
+        {% endif %}   
+  
+{% endblock %}

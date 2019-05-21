@@ -1,0 +1,39 @@
+
+
+{% extends 'lvBaseManager.html' %}
+
+{% block content %}
+
+
+<h3>Copy Approvers </h3>
+
+{% if saveMessage %}
+	{{ saveMessage }}<br><br>
+	<a href="/Approvers/?dept_id=0">Approvers Listing </a><br><br>
+{% endif %}
+
+{% if theStaff %}
+
+	Staff ID:   {{ theStaff.staff_id }}<br>
+	Name :  {{ theStaff.first_name }} {{ theStaff.last_name }}<br>
+	Position :  {{ theStaff.position }}<br><br>
+
+	<form method="get" action="/ApproversCopy">
+
+	Approver 1 <input type="text" name="Approva1" value="{{ appova1Staff.staff_id }}"> {{ appova1Staff.first_name }}<br>
+	Approver 2 <input type="text" name="Approva2" value="{{ appova2Staff.staff_id }}"> {{ appova2Staff.first_name }}<br>
+	Approver 3 <input type="text" name="Approva3" value="{{ appova3Staff.staff_id }}"> {{ appova3Staff.first_name }}<br><br>
+	
+	Target Staff ID (1) <input type="text" name="targetStaff1"><br>
+	Target Staff ID (2) <input type="text" name="targetStaff2"><br>
+	Target Staff ID (3) <input type="text" name="targetStaff3"><br><br>
+
+	<input type = 'submit' value ="Save The Approvers"><br><br>
+	</form>
+
+	<br><br>
+
+{% endif %}
+
+{% endblock %}
+

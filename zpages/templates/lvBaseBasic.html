@@ -1,0 +1,30 @@
+
+<html>     
+    <head>         
+    <title>Online Leave Application</title>     
+    </head>     
+    <body>       
+    <h1>Online Leave Application</h1>
+     
+     <p><strong>Welcome {{ myUser.first_name }} : Online Leave Application</strong>
+<hr>
+<table border=0>
+<tr>
+<td width=210px valign=top>
+
+<a href='http://localhost:8000/'>Home Page</a><br><br>
+<a href='http://localhost:8000/lvCentral/?dept_id=0'>Leave Central</a><br><br>
+<a href='http://localhost:8000/lvScheduleList/?dept_id=0'>Leave Schedules</a><br><br>
+<p><a href='/lvApproval?id=0&lvl=0'>Leave Approval</a></p>
+<p><a href='/lvBalance/?deptIdX=0&approvalX=0'>Leave Balances</a></p>
+<p><a href='/lvApplicationList/?lvTypeX=1&deptIdX=0&approvalX=0'>Leave Applications</a></p>
+<p><a href='/lvReports?lvRpt=9'>Leave Reports</a></p>
+
+<br><br>
+
+</td>
+<td valign=top>
+
+	    {% block content %}
+
+            {% endblock %}

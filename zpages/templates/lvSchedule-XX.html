@@ -1,0 +1,116 @@
+{% extends 'lvBaseSchedManager.html' %}
+
+{% block content %}
+      
+	<h3> Online Leave : Approval Of Leave Schedule </h3>
+	<hr> 
+	<strong>
+	<table><tr><td>
+		<table>
+		<tr><td>Staff ID</td><td>{{ myUser.staff_id }}</td></tr>
+		<tr><td>Name</td><td>{{ myUser.first_name }}..{{ myUser.last_name }} </td></tr>
+		<tr><td>Email</td><td>{{ myUser.email }}</td></tr>
+		<tr><td>Approval Level</td><td>{{ boss_lvl }}</td></tr>
+		<tr><td>Position</td><td>{{ myUser.position }}</td></tr>
+		</table>
+	</td><td width ='250px'></td><td>
+		<table>
+		<tr>
+		<td width='250px'>
+		<a href='http://localhost:8000/lvSchedApproval/?user_id=202&id=0'> Approval Level 1</a><br><br>
+		<a href='http://localhost:8000/lvSchedApproval/?user_id=222&id=0'> Approval Level 2</a><br><br>
+		<a href='http://localhost:8000/lvSchedApproval/?user_id=233&id=0'> Approval Level 3</a><br><br>
+	</td></tr>
+	</table>
+	</td></tr></table>
+  	</strong>
+     
+        <p>LEAVE SCHEDULES PENDING APPROVAL: <strong>{{ query }}</strong></p>
+   
+	{% if approvalMsg %} <strong>{{approvalMsg}} </strong>{% endif %} 
+	<hr>
+
+        {% if lvScheds %}           
+            <p>Found {{ lvScheds|length }} Leave Schedule{{ lvScheds|pluralize }}.</p>
+            <table>               
+                {% for schedd in lvScheds %}               
+                <tr>
+		<!-- <td>{{ schedd.id }} </td> -->
+		<td>Staff ID : {{ schedd.staff_id }} </td>
+                <td>Leave Type: {{ schedd.lv_type }} </td>
+                <td>Days Applied :{{ schedd.lv_days }} </td>
+                <td>Status {{ schedd.approval1 }}
+
+		{% if boss_lvl == 9 %}<a href='/lvSchedApproval?id={{ schedd.id }}&lvl=1'> 
+		{% endif%}Approve L1 {% if boss_lvl == 9 %}</a> {% endif%}</td>
+
+		</td>
+                <td> 
+		{% if boss_lvl == 8 %}<a href='/lvSchedApproval?id={{ schedd.id }}&lvl=2'> 
+		{% endif%}Approve L2 {% if boss_lvl == 8 %}</a> {% endif%}</td>
+
+                <td> 
+		{% if boss_lvl == 7 %}<a href='/lvSchedApproval?id={{ schedd.id }}&lvl=3'> 
+		{% endif%}Approve L3 {% if boss_lvl == 7 %}</a> {% endif%}</td>
+
+                <td>Cancelled : {{ book.cancelled}} ...<a href='/lvSchedApproval?id={{ schedd.id }}&lvl=c'>Cancel </a> </td>
+                <td> <a href='/lvSchedApprovalDetail?id={{ schedd.id }}&lvl=0'>Details</a> </td>
+                <!-- {{ book.approval1_dt }} ==
+                {{ book.approval2_dt}} ==
+                {{ book.approval3_dt}} -->
+		</tr> 
+              
+                {% endfor %}           
+            </table>       
+        {% else %}           
+            <p>No Results matched your search criteria.</p>       
+        {% endif %}  
+	<hr>
+
+        {% if lvSchedsLvl1 %}           
+            <p>Found {{ lvSchedsLvl1|length }} Leave Schedule{{ lvSchedsLvl1|pluralize }}.</p>
+            <table>               
+                {% for schedd in lvSchedsLvl1 %}               
+                <tr>
+		<!-- <td>{{ schedd.id }} </td> -->
+		<td>Staff ID : {{ schedd.staff_id }} </td>
+                <td>Leave Type: {{ schedd.lv_type }} </td>
+                <td>Days Applied :{{ schedd.lv_days }} </td>
+                <td>Status {{ schedd.approval1 }}
+
+		{% if boss_lvl == 9 %}<a href='/lvSchedApproval?id={{ schedd.id }}&lvl=1'> 
+		{% endif%}Approve L1 {% if boss_lvl == 9 %}</a> {% endif%}</td>
+
+		</td>
+                <td> 
+		{% if boss_lvl == 8 %}<a href='/lvSchedApproval?id={{ schedd.id }}&lvl=2'> 
+		{% endif%}Approve L2 {% if boss_lvl == 8 %}</a> {% endif%}</td>
+
+                <td> 
+		{% if boss_lvl == 7 %}<a href='/lvSchedApproval?id={{ schedd.id }}&lvl=3'> 
+		{% endif%}Approve L3 {% if boss_lvl == 7 %}</a> {% endif%}</td>
+
+                <td>Cancelled : {{ book.cancelled}} ...<a href='/lvSchedApproval?id={{ schedd.id }}&lvl=c'>Cancel </a> </td>
+                <td> <a href='/lvSchedApprovalDetail?id={{ schedd.id }}&lvl=0'>Details</a> </td>
+                <!-- {{ book.approval1_dt }} ==
+                {{ book.approval2_dt}} ==
+                {{ book.approval3_dt}} -->
+		</tr> 
+              
+                {% endfor %}           
+            </table>       
+        {% else %}           
+            <p>No Results matched your search criteria.</p>       
+        {% endif %}  
+	<hr>
+
+ 	<form width='900px' method="post">
+Schedule Form <br>
+
+	    {% csrf_token %}{{ form.date }}
+	    {{ form.as_table }}
+
+	    <button type="submit">Send</button>
+	</form>
+  
+{% endblock %}

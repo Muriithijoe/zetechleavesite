@@ -1,0 +1,55 @@
+{% extends 'lvBaseManager.html' %}
+
+{% block content %} 
+
+<a href='/MakeApprovers/'> Make Approvers </a><br><br>
+
+
+
+        <strong>Welcome {{ myUser.last_name }} :EXAM CATS ENTRY </strong>
+ 	{% if allApprovers %}  Found {{ allApprovers|length }} Records{{ allApprovers|pluralize }}</p>{% endif %}
+   
+        {% if allApprovers %} 
+
+	<form method='GET' action ='/ClassMarksPost' >
+          
+           <table>   
+		<tr>	
+			<td colspan=6> <input type='text' id ='txtONE'  name ='txtONE'>
+					<input type='text' id ='txtTWO'  name ='txtTWO'>
+			</td>
+		</tr>
+
+		<tr bgcolor='#ccccee'>	
+			<td>Staff ID</td><td>First Name</td><td>Assn 1</td>
+			<td>Assgn 2</td><td>CAT 1</td><td>CAT 2</td>
+		</tr>
+            
+                {% for approva in allApprovers %}  
+             
+                <tr bgcolor='#eeeeee'>
+		<td>{{ approva.staff_id }} </td>
+                <td>{{ approva.first_name }} </td>
+                <td><input type='text' name='{{ approva.staff_id }}_25FGD34' id='{{ approva.staff_id }}_25FGD34'></td>
+                <td><input type='text' name='{{ approva.staff_id }}_54GS334' id='{{ approva.staff_id }}_54GS334'></td>
+                <td><input type='text' name='{{ approva.staff_id }}_6765D34' id='{{ approva.staff_id }}_6765D34'></td>
+                <td><input type='text' name='{{ approva.staff_id }}_786DH34' id='{{ approva.staff_id }}_786DH34'></td>
+		</tr>
+              
+                {% endfor %}
+
+		<tr bgcolor='#ccccee'>	
+			<td colspan=5> <input type='submit' value ='Submit CW/CAT Marks'></td>
+		</tr>
+
+            </table>
+	</form>
+       
+        {% else %}           
+            <p>No Results For Main Leave Listing Were Found</p>       
+        {% endif %} 
+
+    
+    <!-- </body></html> -->
+
+{% endblock %}

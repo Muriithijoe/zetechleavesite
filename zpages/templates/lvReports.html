@@ -1,0 +1,106 @@
+{% extends 'lvBaseManager.html' %}
+
+{% block content %}
+          
+
+        <p>Leave Reports<strong>
+   
+        {% if lvApplicationList %}           
+            <p>Found {{ lvApplicationList|length }} Approved {{ lvApplicationList|pluralize }}.</p>
+
+            <table border=0 cellpadding=2>
+		<tr bgcolor='#ccccee'>	
+			<td></td><td>Staff ID</td><td>Leave Type</td><td>Start Date</td>
+			<td>Days</td><td>Return</td><td>Approval Status</td>
+			<td>Deducted</td><td>Cancelled</td><td>-</td>
+		</tr>
+                {% for appln in lvApplicationList %}               
+                <tr bgcolor='#eeeeee'>
+		<td> &nbsp &nbsp &nbsp<!-- {{ appln.id }}.. --></td> 
+
+		<td>Staff ID:{{ appln.staff_id }}</td>
+                <td><!-- Leave Type -->
+			{% if appln.lv_type == 1 %} Annual {% endif %}
+			{% if appln.lv_type == 2 %} Maternity {% endif %}
+			{% if appln.lv_type == 3 %} Paternity {% endif %}
+			{% if appln.lv_type == 4 %} Study 	{% endif %}
+			{% if appln.lv_type == 5 %} Compassion {% endif %}
+			{% if appln.lv_type == 6 %} Sick Leave{% endif %}
+			{% if appln.lv_type == 7 %} Other {% endif %}
+			</td>
+
+		<td>{{ appln.lv_startdate }}</td>
+
+                <td>{{ appln.lv_days }}</td>
+		<td>{{ appln.lv_enddate }}</td>
+
+                <td> <!-- Approval Status -->
+
+			{% if appln.approval == 9 %} HOD Approval {% endif %}
+			{% if appln.approval == 8 %} Second Approval {% endif %}
+			{% if appln.approval == 7 %} HR Approval {% endif %}
+			{% if appln.approval == 6 %} Approved {% endif %}
+			{% if appln.approval == 5 %} Cancelled {% endif %}
+			</td>
+
+                <td> <!-- Deducted -->
+			{% if appln.deducted == 0 %} No {% endif %}
+			{% if appln.deducted == 1 %} Yes {% endif %}
+			</td>
+                <!-- <td>Approval Date :{{ appln.approval1_dt }}</td> -->
+
+               <td> <!-- Cancelled -->
+			{% if appln.cancelled == 0 %}No{% endif %}
+			{% if appln.cancelled == 1 %}Yes{% endif %}
+
+		<!--  <a href='/lvCancel?id={{ appln.id }}&lvl=c&user_id={{ appln.staff_id }}'>  Cancel </a> --> 
+			</td>
+
+                <td> <a href='/lvApprovalDetail?id={{ appln.id }}&lvl=0&user_id={{ appln.staff_id }}'>See Details</a> </td>
+
+		</tr> 
+                {% endfor %}           
+            </table> 
+        {% else %}           
+            <p>No Results APPROVED THIS MONTH matched your search criteria.</p>       
+        {% endif %}     
+
+        {% if lvStaffList %}           
+            <p>Found {{ lvStaffList|length }} Approved {{ lvStaffList|pluralize }}.</p>
+            <ul>               
+                {% for lvAppn in lvStaffList %}               
+                <li>
+		{{ lvAppn.id }}..
+		Staff ID...{{ lvAppn.staff_id }}..
+                User ID ...{{ lvAppn.user_id }} ..
+                Password...{{ lvAppn.password }} ...
+                UserStatus..{{ lvAppn.user_status }}...
+                <!-- {{ lvAppn.approval1_dt }} ==
+                {{ lvAppn.approval2_dt}} ==
+                {{ lvAppn.approval3_dt}} --> </li> 
+              
+                {% endfor %}           
+            </ul>       
+        {% endif %}     
+
+        {% if lvCancelledAMonth %}           
+            <p>Found {{ lvCancelledAMonth|length }} Approved {{ lvCancelledAMonth|pluralize }}.</p>
+            <ul>               
+                {% for lvAppn in lvCancelledAMonth %}               
+                <li>
+		{{ lvAppn.id }}..
+		Staff ID...{{ lvAppn.staff_id }}..
+                LeaveType ...{{ lvAppn.lv_type }} ..
+                Leave Days...{{ lvAppn.lv_days }} ...
+                Approval 1..{{ lvAppn.approval1 }}...
+                Approval 2..{{ lvAppn.approval2 }}...
+                Approval 3..{{ lvAppn.approval3 }}...
+                <!-- {{ lvAppn.approval1_dt }} ==
+                {{ lvAppn.approval2_dt}} ==
+                {{ lvAppn.approval3_dt}} --> </li> 
+              
+                {% endfor %}           
+            </ul>       
+        {% endif %}     
+
+{% endblock %}

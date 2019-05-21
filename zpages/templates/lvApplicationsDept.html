@@ -1,0 +1,137 @@
+{% extends 'lvBaseManager.html' %}
+
+{% block content %}
+
+<strong>Use This Filter To View Groups of Leave Applications </strong> <br><br>
+<form method='GET' action='/ApplicationsDept/'>
+
+Leave Type
+<select name='lvTypeX'>
+  <option value="0">All</option>
+  <option value="1">Annual</option>
+  <option value="2">Maternity</option>
+  <option value="3">Paternity</option>
+  <option value="4">Study</option>
+  <option value="5">Compassion</option>
+  <option value="6">Sick Leave</option>
+  <option value="7">Other</option>
+</select>
+
+Status
+<select name='approvalX'>
+  <option value="0">All</option>
+  <option value="9">HOD Approval</option>
+  <option value="8">Level 2</option>
+  <option value="7">HR Approval</option>
+  <option value="6">Fully Approved</option>
+  <option value="5">Cancelled</option>
+</select>
+
+<!-- 
+Since 
+<select  name='daysX'>
+  <option value="0">All</option>
+  <option value="7">Last 7 Days</option>
+  <option value="14">Last 14 Days</option>
+  <option value="30">Last 30 Days</option>
+  <option value="60">60 Days</option>
+  <option value="90">90 Days</option>
+  <option value="365">365 Days</option>
+</select> -->
+
+	<input type="submit" value='Filter Leave Applications'> 
+</form>
+
+	<hr>
+        {% if lvAppList %} 
+	
+            <p><strong>Found {{ lvAppList|length }} Application{{ lvApplicationList1|pluralize }}  </strong></p>
+
+	{% if lvTypex == '0' %} All Types {% endif %} 
+	{% if lvTypex == '1' %} Annual {% endif %} 
+	{% if lvTypex == '2' %} Maternity{% endif %} 
+	{% if lvTypex == '3' %} Paternity{% endif %} 
+	{% if lvTypex == '4' %} Study{% endif %} 
+	{% if lvTypex == '5' %} Compassion{% endif %} 
+	{% if lvTypex == '6' %} Sick Leave {% endif %} 
+
+	{% if deptidx == '0' %} All Departments {% endif %}
+	{% if deptidx == '1' %} Department1 {% endif %} 	{% if deptidx == '2' %} Department2  {% endif %} 	
+	{% if deptidx == '3' %} Department3  {% endif %} 	{% if deptidx == '4' %} Department4  {% endif %} 	
+	{% if deptidx == '5' %} Department5  {% endif %} 	{% if deptidx == '6' %} Department6  {% endif %} 	
+	{% if deptidx == '7' %} Department7  {% endif %} 	{% if deptidx == '8' %} Department8  {% endif %} 	
+	{% if deptidx == '9' %} Department9  {% endif %} 	{% if deptidx == '10' %} Department10  {% endif %} 	
+	{% if deptidx == '11' %} Department11  {% endif %} 	{% if deptidx == '12' %} Department12  {% endif %} 	
+
+	{% if appvox == '9' %} HOD Approval {% endif %} 
+	{% if appvox == '8' %} Level2 {% endif %} 
+	{% if appvox == '7' %} HR Approval {% endif %} 
+	{% if appvox == '6' %} Fully Approved {% endif %} 
+	{% if appvox == '5' %} Cancelled {% endif %} 
+
+	<br>
+
+            <table border=0 cellpadding=2>
+		<tr bgcolor='#ccccee'>	
+			<td></td><!-- td>Staff ID</td --><td>Name</td><td>Leave Type</td><td>Start Date</td>
+			<td>Days</td><td>Return</td><td>Approval Status</td>
+			<td>Deducted</td><td>Cancelled</td><td>Link</td>
+		</tr>
+               
+                {% for appln in lvAppList %}               
+                <tr bgcolor='#eeeeee'>
+		<td> &nbsp &nbsp &nbsp {{ appln.first_namex }}</td> 
+
+		<td>{{ appln.first_name }}</td>
+		<!-- td> {{ appln.last_name }}</td-->
+                <td><!-- Leave Type -->
+			{% if appln.lv_type == 1 %} Annual {% endif %}
+			{% if appln.lv_type == 2 %} Maternity {% endif %}
+			{% if appln.lv_type == 3 %} Paternity {% endif %}
+			{% if appln.lv_type == 4 %} Study 	{% endif %}
+			{% if appln.lv_type == 5 %} Compassion {% endif %}
+			{% if appln.lv_type == 6 %} Sick Leave {% endif %}
+			{% if appln.lv_type == 7 %} Other {% endif %}
+			</td>
+
+		<td>{{ appln.lv_startdate }}</td>
+                <td>{{ appln.lv_days }}</td>
+                <td>{{ appln.lv_enddate }}</td>
+
+                <td> <!-- Approval Status -->
+
+			{% if appln.approval == 9 %} HOD Approval {% endif %}
+			{% if appln.approval == 8 %} Second Approval {% endif %}
+			{% if appln.approval == 7 %} HR Approval {% endif %}
+			{% if appln.approval == 6 %} Full Approved {% endif %}
+			{% if appln.approval == 5 %} Cancelled {% endif %}
+			{% if appln.approval == 4 %} Approved{% endif %}
+			</td>
+
+                <td> <!-- Deducted -->
+			{% if appln.deducted == 0 %}No {% endif %}
+			{% if appln.deducted == 1 %}Yes {% endif %}
+			</td>
+                <!-- <td>Approval Date :{{ appln.approval1_dt }}</td> -->
+
+               <td> <!-- Cancelled -->
+			{% if appln.cancelled == 0 %}No{% endif %}
+			{% if appln.cancelled == 1 %}Yes{% endif %}
+
+		<!--  <a href='/lvCancel?id={{ appln.id }}&lvl=c'> Cancel </a> --> 
+			</td>
+
+                <td> <a href='/lvApprovalDetail?id={{ appln.id }}&lvl=0'>See Details</a> </td>
+
+		</tr> 
+                {% endfor %}           
+            </table> 
+      
+        {% else %}           
+            <p>No Leave Applications Records Matched the Search Criteria.</p>       
+        {% endif %}     
+
+	<hr>
+
+{% endblock %}
+

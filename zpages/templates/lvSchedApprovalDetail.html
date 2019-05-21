@@ -1,0 +1,167 @@
+{% extends 'lvBase.html' %}
+
+{% block content %}
+
+	<h3> Leave Schedule - Detailed View <br><br> Welcome {{ user.first_name }} [{{ user.username }}] </h3>
+	<strong>
+	<table bgcolor='#cccccc'>
+	<tr><td width=300px valign=top>
+	<table class="mytabo">
+		<tr><td class='mytid'>Staff ID</td><td class='mytid'>{{ theStaff.staff_id }}</td></tr>
+		<tr><td class='mytid'>Name</td><td class='mytid'>{{ theStaff.first_name }} {{ theStaff.last_name }}</td></tr>
+		<tr><td class='mytid'>Email</td><td class='mytid'>{{ theStaff.email }}</td></tr>
+		<tr><td class='mytid'>Position</td><td class='mytid'>{{ theStaff.position }}</td></tr>
+	</table>
+	</td><td width=100px> </td>
+	<td width=300px>
+	<table class="mytabo">
+		<tr><td class='mytid'>Leave Balances</td><td class='mytid'>.</td></tr>
+		<tr><td class='mytid'>Annual</td><td class='mytid'>{{ theStaffBalances.lv_annual }}</td></tr>
+		{% if theStaff.sex == 'F' %}
+		<tr><td class='mytid'>Maternity</td><td class='mytid'>{{ theStaffBalances.lv_maternity }} </td></tr>	{% endif %}
+		{% if theStaff.sex == 'M' %}
+		<tr><td class='mytid'>Paternity</td class='mytid'><td class='mytid'>{{ theStaffBalances.lv_paternity }}</td></tr>{% endif %}
+		<tr><td class='mytid'>Study</td><td class='mytid'>{{ theStaffBalances.lv_study }}</td></tr>
+		<tr><td class='mytid'>Compassion</td><td class='mytid'>{{ theStaffBalances.lv_compassion }}</td></tr>
+		<tr><td class='mytid'>Sick Leave</td><td class='mytid'>{{ theStaffBalances.lv_sick }}</td></tr>
+	</table>
+	</tr></table>
+  	</strong>
+
+    	<br>
+	<table>
+	 <tr>
+	<td width=450px>
+
+	{% if saveMsg %} <strong><font color='#f00'> {{saveMsg}} </font> </strong> <br> {% endif %} 
+	
+        {% if theStaffSchedule %}           
+            <strong> Leave Schedule Details For Your Review </strong> <br>
+
+              <table>             
+		<tr>
+		<td>Staff ID: {{ theStaffSchedule.staff_id }} </td>
+		<td> {{ theStaff.first_name }} </td>
+		</tr>
+
+		<tr>
+		<td>{{ theStaffSchedule.sched1_start }}</td>
+		<td>{{ theStaffSchedule.sched1_days }}  Days</td>
+		</tr>
+		<tr>
+		<td>{{ theStaffSchedule.sched2_start }}</td>
+		<td>{{ theStaffSchedule.sched2_days }}  Days</td>
+		</tr>
+	{% if theStaffSchedule.sched3_days > 0 %} <tr>
+		<td>{{ theStaffSchedule.sched3_start }}</td>
+		<td>{{ theStaffSchedule.sched3_days }}  Days</td>
+		</tr> {% endif %}
+	{% if theStaffSchedule.sched4_days > 0 %} <tr>
+		<td>{{ theStaffSchedule.sched4_start }}</td>
+		<td>{{ theStaffSchedule.sched4_days }}  Days</td>
+		</tr> {% endif %}
+	{% if theStaffSchedule.sched5_days > 0 %} <tr>
+		<td>{{ theStaffSchedule.sched5_start }}</td>
+		<td>{{ theStaffSchedule.sched5_days }}  Days</td>
+		</tr> {% endif %}
+		<tr>
+		<td>Remarks</td>
+		<td>{{ theStaffSchedule.lv_description }}  Days</td>
+		</tr>
+	</table>
+
+                Approval: 
+			{% if theStaffSchedule.sched_status == 9 %} HOD Approval {% endif %}
+			<br>
+
+                Cancelled : 
+			{% if theStaffSchedule.reschedule == 0 %}No {% endif %}
+			{% if theStaffSchedule.reschedule == 1 %}Yes {% endif %}
+		<br><br>
+
+		{% if boss_lvl == 9 %}
+		<a href='/lvSchedApprovalDetail?id={{ theStaffSchedule.id }}&lvl=1'   onclick="return confirm('Are you sure you want to Approve?');"> 
+		Approve * <img src="http://localhost:8000/zpages/static/admin/img/icon-yes.svg"> </a> {% endif%}
+		<br>
+                
+		<a href='/lvSchedApprovalDetail?id={{ theStaffSchedule.id }}&lvl=c'>
+		Cancel <img src="http://localhost:8000/zpages/static/admin/img/icon-no.svg"> </a>
+
+               </li> 
+              
+            </ul>       
+        {% else %}           
+            <p>The Leave Schedule Record Has An Issue ...</p>       
+        {% endif %}     
+
+	</td>
+	<td valign=top>
+			<table bgcolor='#dddddd'>
+			<tr>
+			<p>There are {{ lvholidays|length }} Holiday{{ lvholidays|pluralize }} Defined This Year </p>
+               		 {% for holiday in lvholidays %}               
+                	<tr bgcolor='#eeeeee'>
+			<td>{{ holiday.lv_year }}</td>
+			<td>{{ holiday.lv_holidate }}</td>
+			<td>{{ holiday.lv_holiday }}</td>
+			</tr>
+			{% endfor %}
+			</table>
+	</td>
+	</tr>
+	</table>
+
+	<hr>
+        {% if allStaffScheds %}           
+            <p><strong> Found {{ allStaffScheds|length }} Schedule{{ allStaffScheds|pluralize }} For 
+		{{ theStaff.first_name }}</strong> </p>
+
+            <table cellpadding=2>
+		<tr bgcolor='#ccccee'>	
+			<td>StaffID</td><td>Block 1</td><td>Days</td>
+			<td>Block 2</td><td>Days</td><td>Block 3</td><td>Days</td>
+			<td>Block 4</td><td>Days</td><td>Block 5</td><td>Days</td><td>Approval Status</td>
+			<td>Cancelled</td><td>Link</td>
+		</tr>
+               
+                {% for schedd in allStaffScheds %}               
+                <tr  bgcolor='#eeeeee'>
+		<!-- <td>{{ schedd.id }} </td> -->
+		<td> {{ schedd.staff_id }}</td>
+
+                <td>{{ schedd.sched1_start }}</td>
+                <td>{{ schedd.sched1_days }} </td>
+                <td>{{ schedd.sched2_start }}</td>
+                <td>{{ schedd.sched2_days }} </td>
+                <td>{{ schedd.sched3_start }}</td>
+                <td>{{ schedd.sched3_days }} </td>
+                <td>{{ schedd.sched4_start }}</td>
+                <td>{{ schedd.sched4_days }} </td>
+                <td>{{ schedd.sched5_start }}</td>
+                <td>{{ schedd.sched5_days }} </td>
+
+                <td> <!-- Status {{ schedd.sched_status }} -->
+			{% if schedd.sched_status == 9 %} HOD Approval {% endif %}
+			{% if schedd.sched_status == 8 %} Approved {% endif %}
+			{% if schedd.sched_status < 8 %} Cancelled {% endif %}
+		</td>
+                <td>
+			{% if schedd.reschedule == 0 %}No {% endif %}
+			{% if schedd.reschedule == 1 %}Yes {% endif %}
+		</td>
+                <!-- <td>Approval Date :{{ schedd.approval_dt }}</td> -->
+
+                <td> <a href='/lvSchedApprovalDetail?id={{ schedd.id }}&lvl=0'>Details</a> </td>
+
+		</tr> 
+                {% endfor %}           
+            </table>       
+        {% else %}           
+            <p>No Leave Schedules Were Found</p>       
+        {% endif %}
+
+	<br><br>   
+
+<hr> AL :: {{ boss_lvl }}  
+
+{% endblock %}

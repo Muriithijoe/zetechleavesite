@@ -1,0 +1,132 @@
+
+<html>     
+    <head>  
+
+	{% load static %}
+	<script type="text/javascript" src="{% static 'jquery-3.3.1.min.js' %}"></script> 
+	<script type="text/javascript" src="{% static 'jquery-3.3.1.js' %}">
+	</script> 
+	<script type="text/javascript" src="{% static '\jqueryui\jquery-ui.js' %}"></script> 
+
+	<!-- Make sure that the jQuery name is correct. With updates and different versions, 
+	the number after 'jquery' will change  -->
+
+ /* Include the jquery Ui here */
+ <script>
+  $(function() {
+    //$( "#id_myDate" ).datepicker(); 
+    $( ".datepicker" ).datepicker();  
+  });
+$.datepicker.setDefaults({
+  showOn: "both",
+  buttonImageOnly: true,
+  buttonImage: "calendar.gif",
+  buttonText: "Date"
+});
+  </script>
+ 	      
+    <title>Online Leave Application</title>     
+    </head>     
+    <body>       
+    <h1>Online Leave Application</h1>
+     
+        <p>Welcome {{ query.first_name }} : Online Leave Application <strong>
+
+	<table bgcolor='#cccccc'><tr><td>
+	<table>
+		<tr><td>Staff ID</td><td>{{ query.staff_id }}</td></tr>
+		<tr><td>Name</td><td>{{ query.first_name }}..{{ query.last_name }} </td></tr>
+		<tr><td>Email</td><td>{{ query.email }}</td></tr>
+		<tr><td>Position</td><td>{{ query.position }}</td></tr>
+	</table>
+	</td><td width=150px> </td>
+	<td>
+
+	<p>Your Personal Leave Balances Are</p>
+		<table>
+		<tr><td>ANNUAL</td><td>{{ myLvBals.lv_annual }}</td></tr>
+		<tr><td>MATERNITY</td><td>{{ myLvBals.lv_maternity }} </td></tr>
+		<tr><td>PATERNITY</td><td>{{ myLvBals.lv_paternity }}</td></tr>
+		<tr><td>STUDY</td><td>{{ myLvBals.lv_study }}</td></tr>
+	</table>
+	</tr></table>
+   
+	{% if saveMsg %} 
+		<br><strong>{{saveMsg}}</strong>
+	{% endif %}
+
+	<hr>
+        {% if lvApps %}           
+            <p>Found {{ lvApps|length }} Leave Applications{{ lvApps|pluralize }}.</p>
+            <table>               
+                {% for appln in lvApps %}               
+                <tr>
+		<!-- <td>{{ appln.id }}..</td> -->
+		<td>Staff ID:{{ appln.staff_id }}..</td>
+                <td>Leave Type :{{ appln.lv_type }} ..</td>
+                <td>Days :{{ appln.lv_days }} ...</td>
+                <td>Approval 1:{{ appln.approval1 }} ..</td>
+                <td>Deducted:{{ appln.deducted }}...</td>
+                <!-- <td>Approval Date :{{ appln.approval1_dt }}</td> -->
+
+               <td>Cancelled : {{ appln.cancelled}} <!--  <a href='/lvCancel?id={{ appln.id }}&lvl=c&user_id={{ appln.staff_id }}'>  -->Cancel </a> </td>
+                <td> <a href='/lvApprovalDetail?id={{ appln.id }}&lvl=0&user_id={{ appln.staff_id }}'>See Details</a> </td>
+
+		</tr> 
+                {% endfor %}           
+            </table>       
+        {% else %}           
+            <p>No Leave Applications Were Found For You</p>       
+        {% endif %}     
+
+        {% if lvApproveds %}           
+            <p>Found {{ lvApproveds|length }} Approved Applications{{ lvApproveds|pluralize }}.</p>
+            <table>               
+                {% for appln in lvApproveds %}               
+                <tr>
+		<!-- <td>{{ appln.id }}..</td> -->
+		<td>Staff ID:{{ appln.staff_id }}..</td>
+                <td>Leave Type :{{ appln.lv_type }} ..</td>
+                <td>Days :{{ appln.lv_days }} ...</td>
+                <td>Approval 1:{{ appln.approval1 }} ..</td>
+                <td>Approval 2:{{ appln.approval2 }}...</td>
+                <td>Approval 3:{{ appln.approval3 }}...</td>
+                <td>Approval Date :{{ appln.approval1_dt }}</td>
+               <!--  <td>{{ appln.approval2_dt}} ==</td>
+                <td>{{ appln.approval3_dt}} </td> -->
+		</tr> 
+              
+                {% endfor %}           
+            </table>       
+        {% else %}           
+            <p>No Approved Leaves Were Found.</p>       
+        {% endif %}     
+
+	<hr>
+	
+	<table bgcolor='#cccccc'>
+	<tr><td>
+         {% if lvApps %}           
+            <p>Found {{ lvApps|length }} Leave Application{{ lvApps|pluralize }}.</p>
+		<p>Do Not Apply For Same Leave Type. <br>First Delete (Cancel The Pending Leave <br> Applications)</p>
+		<br><br><br><br>
+	{% endif %}
+	</td>
+	<td width=100px> </td>
+	<td width=300px>
+
+	<h3>Apply For Leave</h3>
+	<form method="post">
+	    {% csrf_token %}
+	    {{ form.as_p }}
+
+
+	    <div class="form-actions">
+	      <button type="submit">Send</button>
+	    </div>
+	</form>
+	</td>
+	</tr></table>
+
+    </body>
+</html>

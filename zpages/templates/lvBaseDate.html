@@ -1,14 +1,14 @@
-
-<html>     
-    <head>  
+{% extends 'base.html' %}
+<html>
+    <head>
 
 	{% load static %}
-	<script type="text/javascript" src="{% static 'jquery-3.3.1.min.js' %}"></script> 
+	<script type="text/javascript" src="{% static 'jquery-3.3.1.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'jquery-3.3.1.js' %}">
-	</script> 
-	<script type="text/javascript" src="{% static '\jqueryui\jquery-ui.js' %}"></script> 
+	</script>
+	<script type="text/javascript" src="{% static '\jqueryui\jquery-ui.js' %}"></script>
 
-	<!-- Make sure that the jQuery name is correct. With updates and different versions, 
+	<!-- Make sure that the jQuery name is correct. With updates and different versions,
 	the number after 'jquery' will change  -->
 
  <!-- Include the jquery Ui here -->
@@ -16,8 +16,8 @@
 
  <script>
   $(function() {
-    //$( "#id_myDate" ).datepicker(); 
-    $( ".datepicker" ).datepicker();  
+    //$( "#id_myDate" ).datepicker();
+    $( ".datepicker" ).datepicker();
   });
 $.datepicker.setDefaults({
   showOn: "both",
@@ -26,19 +26,19 @@ $.datepicker.setDefaults({
   buttonText: "Pick Date"
 });
   </script>
- 	        
-    <title>Online Leave Application</title>   
+
+    <title>Online Leave Application</title>
 	<link rel="stylesheet" type="text/css" href="{% static '\jqueryui\jquery-ui.css' %}" />
 
 	<link rel="stylesheet" type="text/css" href="/zpages/static/admin/css/base.css" />
 	<link rel="stylesheet" type="text/css" href="/zpages/static/customcss/cbase1.css" />
   	<link rel="stylesheet" type="text/css" href="/zpages/static/admin/css/changelists.css" />
-    </head>     
+    </head>
     <body>
 
-      
+
     <h1>Online Leave Application</h1>
-     
+
      <p><strong>Welcome {{ myUser.first_name }} : Online Leave Application</strong>
 <hr>
 <table border=0>

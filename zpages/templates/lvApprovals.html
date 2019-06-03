@@ -1,32 +1,32 @@
-{% extends 'lvBaseSchedManager.html' %}
+{% extends 'lvBaseSchedManager-XX.html' %}
 
-{% block content %} 
+{% block content %}
 
 <strong>
 	<strong> Online Leave Applications :  Approval Page <br>
 	 Welcome {{ user.username }} : {{ myUser.first_name }}
 	 :: [{{ myUser.position }}] </strong><br>
 
-	<br>You May Approve By Clicking the Icon 
-	<img src="/zpages/static/admin/img/icon-yes.svg"> OR Cancel The Application By Clicking the Icon 
-	<img src="/zpages/static/admin/img/icon-no.svg"> <br> You May Wish To See the Individual Application Details
-	 By Clicking the Icon <img src="/zpages/static/admin/img/icon-changelink.svg"> <br><br>
+	<br>You May Approve By Clicking the Icon
+	<img src="/static/img/approve.png"> OR Cancel The Application By Clicking the Icon
+	<img src="/static/img/cancel.png"> <br> You May Wish To See the Individual Application Details
+	 By Clicking the Icon <img src="/static/img/details.png"> <br><br>
 
-	{% if approvalMsg %} <strong><font color='#f00'> <br>{{approvalMsg}} </font></strong>{% endif %} 
+	{% if approvalMsg %} <strong><font color='#f00'> <br>{{approvalMsg}} </font></strong>{% endif %}
 
-        {% if myLvApps1 %}           
+        {% if myLvApps1 %}
             <p>First Level Approval : {{ myLvApps1|length }} Leave Application{{ myLvApps1|pluralize }}</p>
 
             <table  id="result_list">
-		<tr bgcolor='#ccccee'   class="row2">	
+		<tr bgcolor='#ccccee'   class="row2">
 			<td></td><td>Staff ID</td><td>Leave Type</td><!-- td>Department</td --><td>Start Date</td>
 			<td>Duration</td><td>Returns</td><td>Approval Status</td>
 			<td>Cancelled</td><td>Approve</td><td>Cancel</td><td>Link</td>
 		</tr>
-               
-                {% for appln in myLvApps1 %}               
+
+                {% for appln in myLvApps1 %}
                 <tr bgcolor='#eeeeee'   class="row1">
-		<td> &nbsp &nbsp &nbsp<!-- {{ appln.id }}.. --></td> 
+		<td> &nbsp &nbsp &nbsp<!-- {{ appln.id }}.. --></td>
 		<td>{{ appln.staff_id }} {{ appln.staffname }}</td>
 
                 <td><!-- Leave Type -->
@@ -38,7 +38,7 @@
 			{% if appln.lv_type == 6 %} Sick {% endif %}
 			{% if appln.lv_type == 7 %} Other {% endif %}
 			</td>
-                
+
 		<!-- td>{{ appln.dept }}</td -->
 		<td>{{ appln.lv_startdate }}</td>
                 <td>{{ appln.lv_days }}</td>
@@ -62,39 +62,39 @@
 
 		{% if boss_lvl > 6 %}
 		<td><a href='/lvApproval?id={{ appln.id }}&lvl=1' onclick="return confirm('Are you sure you want to Approve?');">
-		Approve * <img src="/zpages/static/admin/img/icon-yes.svg"></a> </td> {% endif%}
+		Approve * <img src="/static/img/approve.png"></a> </td> {% endif%}
                 <td> <a href='/lvApproval?id={{ appln.id }}&lvl=c' onclick="return confirm('Are you sure you want to Cancel?');">
-		Cancel  <img src="/zpages/static/admin/img/icon-no.svg"></a> </td>
+		Cancel  <img src="/static/img/cancel.png"></a> </td>
 
                 <td> <a href='/lvApprovalDetail?id={{ appln.id }}&lvl=0' >
-		Details  <img src="/zpages/static/admin/img/icon-changelink.svg"></a> </td>
+		Details  <img src="/static/img/details.png"></a> </td>
 
                 <!-- {{ book.approval1_dt }} ==
                 {{ book.approval2_dt}} ==
                 {{ book.approval3_dt}} -->
-		</tr> 
-              
-                {% endfor %}           
-            </table>       
-        {% else %}           
+		</tr>
+
+                {% endfor %}
+            </table>
+        {% else %}
             <!-- <p>No Results matched your search criteria.</p>  -->
-        {% endif %}   
+        {% endif %}
 	<br>
 	<! ===================================================  -->
 
-        {% if myLvApps2 %}           
+        {% if myLvApps2 %}
             <p>Second Level Approval : {{ myLvApps2|length }} Leave Application{{ myLvApps2|pluralize }}</p>
 
             <table border=0 cellpadding=2>
-		<tr bgcolor='#ccccee'   class="row2">	
+		<tr bgcolor='#ccccee'   class="row2">
 			<td></td><td>Staff ID</td><td>Leave Type</td><!-- td>Department</td --><td>Start Date</td>
 			<td>Duration</td><td>Returns</td><td>Approval Status</td>
 			<td>Cancelled</td><td>Approve</td><td>Cancel</td><td>Link</td>
 		</tr>
-               
-                {% for appln in myLvApps2 %}               
+
+                {% for appln in myLvApps2 %}
                 <tr bgcolor='#eeeeee'   class="row1">
-		<td> &nbsp &nbsp &nbsp<!-- {{ appln.id }}.. --></td> 
+		<td> &nbsp &nbsp &nbsp<!-- {{ appln.id }}.. --></td>
 		<td>{{ appln.staff_id }} {{ appln.staffname }}</td>
 
                 <td><!-- Leave Type -->
@@ -106,7 +106,7 @@
 			{% if appln.lv_type == 6 %} Sick {% endif %}
 			{% if appln.lv_type == 7 %} Other {% endif %}
 			</td>
-                
+
 		<!-- td>{{ appln.dept }}</td -->
 		<td>{{ appln.lv_startdate }}</td>
                 <td>{{ appln.lv_days }}</td>
@@ -130,40 +130,40 @@
 
 		{% if boss_lvl > 6 %}
 		<td><a href='/lvApproval?id={{ appln.id }}&lvl=2' onclick="return confirm('Are you sure you want to Approve?');">
-		Approve ** <img src="/zpages/static/admin/img/icon-yes.svg"></a> </td> {% endif%}
+		Approve ** <img src="/static/img/approve.png"></a> </td> {% endif%}
                 <td> <a href='/lvApproval?id={{ appln.id }}&lvl=c' onclick="return confirm('Are you sure you want to Cancel?');">
-		Cancel  <img src="/zpages/static/admin/img/icon-no.svg"></a> </td>
+		Cancel  <img src="/static/img/cancel.png"></a> </td>
 
                 <td> <a href='/lvApprovalDetail?id={{ appln.id }}&lvl=0' >
-		Details  <img src="/zpages/static/admin/img/icon-changelink.svg"></a> </td>
+		Details  <img src="/static/img/details.png"></a> </td>
 
                 <!-- {{ book.approval1_dt }} ==
                 {{ book.approval2_dt}} ==
                 {{ book.approval3_dt}} -->
-		</tr> 
-              
-                {% endfor %}           
-            </table>       
-        {% else %}           
-            <!-- <p>No Results matched your search criteria.</p>   -->     
-        {% endif %}   
+		</tr>
+
+                {% endfor %}
+            </table>
+        {% else %}
+            <!-- <p>No Results matched your search criteria.</p>   -->
+        {% endif %}
 	<br>
 	<! ===================================================  -->
 
 
-        {% if myLvApps3 %}           
+        {% if myLvApps3 %}
             <p>Third (Final) Level Approval : {{ myLvApps3|length }} Leave Application{{ myLvApps3|pluralize }}</p>
 
             <table border=0 cellpadding=2>
-		<tr bgcolor='#ccccee'   class="row2">	
+		<tr bgcolor='#ccccee'   class="row2">
 			<td></td><td>Staff ID</td><td>Leave Type</td><!-- td>Department</td --><td>Start Date</td>
 			<td>Duration</td><td>Returns</td><td>Approval Status</td>
 			<td>Cancelled</td><td>Approve</td><td>Cancel</td><td>Link</td>
 		</tr>
-               
-                {% for appln in myLvApps3 %}               
+
+                {% for appln in myLvApps3 %}
                 <tr bgcolor='#eeeeee'   class="row1">
-		<td> &nbsp &nbsp &nbsp<!-- {{ appln.id }}.. --></td> 
+		<td> &nbsp &nbsp &nbsp<!-- {{ appln.id }}.. --></td>
 		<td>{{ appln.staff_id }} {{ appln.staffname }}</td>
 
                 <td><!-- Leave Type -->
@@ -175,7 +175,7 @@
 			{% if appln.lv_type == 6 %} Sick {% endif %}
 			{% if appln.lv_type == 7 %} Other {% endif %}
 			</td>
-                
+
 		<!-- td>{{ appln.dept }}</td -->
 		<td>{{ appln.lv_startdate }}</td>
                 <td>{{ appln.lv_days }}</td>
@@ -199,25 +199,25 @@
 
 		{% if boss_lvl > 6 %}
 		<td> <a href='/lvApproval?id={{ appln.id }}&lvl=3' onclick="return confirm('Are you sure you want to Approve?');">
-		Approve ***  <img src="/zpages/static/admin/img/icon-yes.svg"></a> </td> {% endif%}
+		Approve ***  <img src="/static/img/approve.png"></a> </td> {% endif%}
 		</td>
                 <td> <a href='/lvApproval?id={{ appln.id }}&lvl=c' onclick="return confirm('Are you sure you want to Cancel?');">
-		Cancel  <img src="/zpages/static/admin/img/icon-no.svg"></a> </td>
+		Cancel  <img src="/static/img/cancel.png"></a> </td>
 
                 <td> <a href='/lvApprovalDetail?id={{ appln.id }}&lvl=0' >
-		Details  <img src="/zpages/static/admin/img/icon-changelink.svg"></a> </td>
+		Details  <img src="/static/img/details.png"></a> </td>
 
                 <!-- {{ book.approval1_dt }} ==
                 {{ book.approval2_dt}} ==
                 {{ book.approval3_dt}} -->
-		</tr> 
-              
-                {% endfor %}           
-            </table>       
-        {% else %}           
-            <!-- <p>No Results matched your search criteria.</p> -->    
-        {% endif %}   
+		</tr>
 
-<hr>  ///AL {{ boss_lvl }} 
+                {% endfor %}
+            </table>
+        {% else %}
+            <!-- <p>No Results matched your search criteria.</p> -->
+        {% endif %}
+
+<hr>  ///AL {{ boss_lvl }}
 
 {% endblock %}

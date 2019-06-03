@@ -1,21 +1,21 @@
 {% extends 'lvBase.html' %}
 
 {% block content %}
-      
+
     <h3>Online Leave Application
 	<br><br> Welcome {{ theStaff.first_name }}  [{{ user.username }}]</h3><br>
-     
-        {% if appns_count > 0 %}           
-       		<a href='/lvApproval?id=0&lvl=0'>Leave Approval [ {{ appns_count }} ]</a> 
-		- Approve Leave Applications For Staff <br>
-        {% endif %}     
 
-        {% if scheds_count > 0 %}          
-       		<a href='/lvSchedApproval?id=0&lvl=0'>Schedule Approval  [ {{ scheds_count }} ]</a> 
+        {% if appns_count > 0 %}
+       		<a href='/lvApproval?id=0&lvl=0'>Leave Approval [ {{ appns_count }} ]</a>
+		- Approve Leave Applications For Staff <br>
+        {% endif %}
+
+        {% if scheds_count > 0 %}
+       		<a href='/lvSchedApproval?id=0&lvl=0'>Schedule Approval  [ {{ scheds_count }} ]</a>
 		- Approve Leave Schedules For Staff <br>
         {% endif %}
 
-        {% if boss_lvl >= 7 %}          
+        {% if boss_lvl >= 7 %}
        		<a href='/lvApplicationList/?lvTypeX=0&deptIdX=0&approvalX=0'>Managers Reports </a>
 		 - Access Various Leave Report Views <br>
 		<a href='/ApplicationsDept/?lvTypeX=0&approvalX=0'>Department Reports</a>
@@ -27,7 +27,7 @@
 
 	<strong>
 	<table class="mytabo" bgcolor='#ddd'><tr>
-	<td width='250px'  valign='top'>
+	<td width='250px'  valign='top|center'>
 	<table  class="x" >
 		<tr><td class='mytid'>Staff ID</td><td class='mytid'>{{ theStaff.staff_id }}</td></tr>
 		<tr><td class='mytid'>Name</td><td class='mytid'>{{ theStaff.first_name }}<br>{{ theStaff.last_name }} </td></tr>
@@ -51,11 +51,11 @@
 		</td></tr>
 		</table>
 	</td>
-	<td width='250px' valign='top'> 
-	
-        {% if theStaffSchedule %}           
-           <strong> Leave Schedule </strong>  
-            <table class="mytabo" >               
+	<td width='250px' valign='top'>
+
+        {% if theStaffSchedule %}
+           <strong> Leave Schedule </strong>
+            <table class="mytabo" >
                 <tr>
 		<td class='mytid'> <!--  {{theStaffSchedule.id }}  --></td>
 		</tr>
@@ -67,25 +67,25 @@
                 	<td class='mytid'>Starting {{ theStaffSchedule.sched1_start }}</td>
                 </tr><tr><td class='mytid'>{{ theStaffSchedule.sched2_days }} Days </td>
                 	<td class='mytid'>Starting {{ theStaffSchedule.sched2_start }}</td>
-                </tr>   {% if theStaffSchedule.sched3_days > 0 %} 
+                </tr>   {% if theStaffSchedule.sched3_days > 0 %}
 		<tr><td class='mytid'>{{ theStaffSchedule.sched3_days }} Days </td>
                 	<td class='mytid'> Starting {{ theStaffSchedule.sched3_start }}  </td>
 		</tr> {% endif %}
-                </tr>   {% if theStaffSchedule.sched4_days > 0 %} 
+                </tr>   {% if theStaffSchedule.sched4_days > 0 %}
 		<tr><td class='mytid'>{{ theStaffSchedule.sched4_days }} Days </td>
                 	<td class='mytid'> Starting {{ theStaffSchedule.sched4_start }}  </td>
 		</tr> {% endif %}
-                </tr>   {% if theStaffSchedule.sched5_days > 0 %} 
+                </tr>   {% if theStaffSchedule.sched5_days > 0 %}
 		<tr><td class='mytid'>{{ theStaffSchedule.sched5_days }} Days </td>
                 	<td class='mytid'> Starting {{ theStaffSchedule.sched5_start }}  </td>
 		</tr> {% endif %}
-            </table>       
-      
-        {% else %}           
+            </table>
+
+        {% else %}
             <strong>Leave Schedule </strong>
-		<p>You Have Not Submitted A Leave Schedule.<br> 
-		You can use the Link Below To Fill A Schedule Form. It takes Only a Couple of Minutes</p>       
-        {% endif %}  
+		<p>You Have Not Submitted A Leave Schedule.<br>
+		You can use the Link Below To Fill A Schedule Form. It takes Only a Couple of Minutes</p>
+        {% endif %}
 	</td>
 	</tr>
 	</table>
@@ -99,19 +99,19 @@
         <a href='http://localhost:8000/lvApplied'>Leave Applications</a></p>
 
 
-        {% if myLvApps %}           
-            <p>Found {{ myLvApps|length }} Leave Applications{{ myLvApps|pluralize }} For : <b> {{ theStaff.first_name }} </b>
+        {% if myLvApps %}
+            <p>Found {{ myLvApps|length }} Leave Application{{ myLvApps|pluralize }} For : <b> {{ theStaff.first_name }} </b>
 	</p>
             <table id="result_list">
-		<tr bgcolor='#ccccee'  class="row2">	
+		<tr bgcolor='#ccccee'  class="row2">
 			<td></td><td>Leave Type</td><td>Starting</td>
 			<td>Days</td><td>Returning</td><td>Approval Status</td>
 			<td>Deducted</td><td>Cancelled</td><td>Link</td>
 		</tr>
-               
-                {% for appln in myLvApps %}               
+
+                {% for appln in myLvApps %}
                 <tr bgcolor='#eeeeee'  class="row1">
-		<td> &nbsp &nbsp &nbsp<!-- {{ appln.id }}.. --></td> 
+		<td> &nbsp &nbsp &nbsp<!-- {{ appln.id }}.. --></td>
 		<!-- <td>Staff ID:{{ appln.staff_id }}..</td> -->
 
                 <td><!-- Leave Type -->
@@ -147,18 +147,18 @@
 			{% if appln.cancelled == 0 %}No{% endif %}
 			{% if appln.cancelled == 1 %}Yes{% endif %}
 
-		<!--  <a href='/lvCancel?id={{ appln.id }}&lvl=c&user_id={{ appln.staff_id }}'>  Cancel </a> --> 
+		<!--  <a href='/lvCancel?id={{ appln.id }}&lvl=c&user_id={{ appln.staff_id }}'>  Cancel </a> -->
 			</td>
 
                 <td> <a href='/lvApprovalDetail?id={{ appln.id }}&lvl=0&user_id={{ appln.staff_id }}'>Details</a> </td>
 
-		</tr> 
-                {% endfor %}           
-            </table>       
-        {% else %}           
+		</tr>
+                {% endfor %}
+            </table>
+        {% else %}
             <p>No Leave Applications Were Found For You. </p>
 		<p>You can use the Link AboveTo Apply For Leave </p>
-        {% endif %}     
+        {% endif %}
 
 <hr>
  /// AL {{ boss_lvl }}

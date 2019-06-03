@@ -17,7 +17,7 @@
 	</td>
 
 	<td width=200px>
-	<strong> Leave Balances</strong> 
+	<strong> Leave Balances</strong>
 		<table class="mytabo">
 		<tr><td class="mytid">Annual</td><td class="mytid">{{ theStaffBalances.lv_annual }}</td></tr>
 		{% if theStaff.sex == 'F' %}
@@ -29,11 +29,11 @@
 		</td></tr>
 		</table>
 	</td>
-	<td width=250px> 
-	
-        {% if theStaffSchedule %}           
-           <strong> Leave Schedule </strong>  
-            <table class="mytabo">               
+	<td width=250px>
+
+        {% if theStaffSchedule %}
+           <strong> Leave Schedule </strong>
+            <table class="mytabo">
                 <tr>
 		<td class="mytid"> <!--  {{theStaffSchedule.id }}  --></td>
 		</tr>
@@ -47,24 +47,24 @@
                 </tr><tr><td class="mytid">{{ theStaffSchedule.sched2_days }} Days </td>
                 	<td class="mytid">Starting {{ theStaffSchedule.sched2_start }}</td>
                 </tr>
-                </tr>   {% if theStaffSchedule.sched3_days > 0 %} 
+                </tr>   {% if theStaffSchedule.sched3_days > 0 %}
 		<tr><td class='mytid'>{{ theStaffSchedule.sched3_days }} Days </td>
                 	<td class='mytid'> Starting {{ theStaffSchedule.sched3_start }}  </td>
 		</tr> {% endif %}
-                </tr>   {% if theStaffSchedule.sched4_days > 0 %} 
+                </tr>   {% if theStaffSchedule.sched4_days > 0 %}
 		<tr><td class='mytid'>{{ theStaffSchedule.sched4_days }} Days </td>
                 	<td class='mytid'> Starting {{ theStaffSchedule.sched4_start }}  </td>
 		</tr> {% endif %}
-                </tr>   {% if theStaffSchedule.sched5_days > 0 %} 
+                </tr>   {% if theStaffSchedule.sched5_days > 0 %}
 		<tr><td class='mytid'>{{ theStaffSchedule.sched5_days }} Days </td>
                 	<td class='mytid'> Starting {{ theStaffSchedule.sched5_start }}  </td>
 		</tr> {% endif %}
 
-            </table>       
-      
-        {% else %}           
-            <p>The Leave Schedule For This Staff Was Not Found ...</p>       
-        {% endif %}  
+            </table>
+
+        {% else %}
+            <p>The Leave Schedule For This Staff Was Not Found ...</p>
+        {% endif %}
 	</td>
 	</tr>
 	</table>
@@ -74,12 +74,12 @@
 	 <tr>
 	<td width=450px>
 
-	{% if saveMsg %} <strong><font color='#f00'>{{saveMsg}} </font></strong>{% endif %} 
-	
-        {% if theAppn %}           
+	{% if saveMsg %} <strong><font color='#f00'>{{saveMsg}} </font></strong>{% endif %}
+
+        {% if theAppn %}
             <p><strong> The Leave Application Details </p>
 
-              <table>             
+              <table>
 		<tr>
 		<td>Staff ID: {{ theAppn.staff_id }} </td>
 		<td> {{ theAppn.first_name }}  {{ theAppn.second_name }} </td>
@@ -101,7 +101,7 @@
                 <tr><td>Days 	</td><td>{{ theAppn.lv_days }} </td></tr>
                 <tr><td>Remarks 	</td><td>{{ theAppn.remarks }} </td></tr>
 
-                <tr><td>Status : 
+                <tr><td>Status :
 			{% if theAppn.approval == 9 %} HOD Approval {% endif %}
 			{% if theAppn.approval == 8 %} Second Approval {% endif %}
 			{% if theAppn.approval == 7 %} HR Approval {% endif %}
@@ -109,7 +109,7 @@
 			{% if theAppn.approval == 5 %} Cancelled {% endif %}
 			</td></tr>
 
-		<tr><td>Cancelled : 
+		<tr><td>Cancelled :
 			{% if appln.approval1 != 5 %} No  {% endif %}
 			{% if appln.approval1 == 5 %} Yes {% endif %}
 			</td></tr>
@@ -119,30 +119,30 @@
 
 		{% if boss_lvl == 9 %}
 		<a href='/lvApprovalDetail?id={{ theAppn.id }}&lvl=1' onclick="return confirm('Are you sure you want to Approve?');">
-		Approve * <img src="/zpages/static/admin/img/icon-yes.svg"> </a>  <br>{% endif%}
+		Approve * <img src="/static/img/approve.png"> </a>  <br>{% endif%}
 
 		{% if boss_lvl == 8 %}
 		<a href='/lvApprovalDetail?id={{ theAppn.id }}&lvl=2' onclick="return confirm('Are you sure you want to Approve?');">
-		Approve ** <img src="/zpages/static/admin/img/icon-yes.svg"> </a>  <br>{% endif%}
+		Approve ** <img src="/static/img/approve.png"> </a>  <br>{% endif%}
 
 		{% if boss_lvl == 7 %}
 		<a href='/lvApprovalDetail?id={{ theAppn.id }}&lvl=3' onclick="return confirm('Are you sure you want to Approve?');">
-		Approve *** <img src="/zpages/static/admin/img/icon-yes.svg"> </a>  <br>{% endif%}
-                
-		<a href='/lvApprovalDetail?id={{ theAppn.id }}&lvl=c'>Cancel This Application 
-		   <img src="/zpages/static/admin/img/icon-no.svg"> </a>
+		Approve *** <img src="/static/img/approve.png"> </a>  <br>{% endif%}
+
+		<a href='/lvApprovalDetail?id={{ theAppn.id }}&lvl=c'>Cancel This Application
+		   <img src="/static/img/cancel.png"> </a>
 		<br>
-		              
-            </ul>       
-        {% else %}           
-            <p>The Leave Application For Approval Has An Issue ...</p>       
-        {% endif %}     
+
+            </ul>
+        {% else %}
+            <p>The Leave Application For Approval Has An Issue ...</p>
+        {% endif %}
 
 	</td>
 	<td valign=top>
 			<table><tr>
 			<p>{{ lvholidays|length }} Holiday{{ lvholidays|pluralize }} Defined This Year </p>
-               		 {% for holiday in lvholidays %}               
+               		 {% for holiday in lvholidays %}
                 	<tr bgcolor='#eeeeee'>
 			<td>{{ holiday.lv_year }}</td>
 			<td>{{ holiday.lv_holidate }}</td>
@@ -154,19 +154,19 @@
 	</tr>
 	</table>
 
-        {% if lvAppsList %}           
+        {% if lvAppsList %}
             <p>Found {{ lvAppsList|length }} Leave Applications{{ lvAppsList|pluralize }} for {{ theStaff.first_name }}	</p>
 
             <table border=0 cellpadding=2>
-		<tr bgcolor='#ccccee'>	
+		<tr bgcolor='#ccccee'>
 			<td></td><td>Staff ID</td><td>FirstName</td><td>Leave Type</td><td>Start Date</td>
 			<td>Days</td><td>Ending</td><td>Approval Status</td>
 			<td>Deducted</td><td>Cancelled</td><td>Link</td>
 		</tr>
-               
-                {% for appln in lvAppsList %}               
+
+                {% for appln in lvAppsList %}
                 <tr bgcolor='#eeeeee'>
-		<td> &nbsp &nbsp &nbsp<!-- {{ appln.id }}.. --></td> 
+		<td> &nbsp &nbsp &nbsp<!-- {{ appln.id }}.. --></td>
 		<td> {{ appln.staff_id }}</td>
 		<td> {{ appln.first_name }}</td>
 
@@ -203,21 +203,21 @@
 			{% if appln.cancelled == 0 %} No {% endif %}
 			{% if appln.cancelled == 1 %} Cancelled {% endif %}
 
-		<!--  <a href='/lvCancel?id={{ appln.id }}&lvl=c'>  Cancel </a> --> 
+		<!--  <a href='/lvCancel?id={{ appln.id }}&lvl=c'>  Cancel </a> -->
 			</td>
 
                 <td> <a href='/lvApprovalDetail?id={{ appln.id }}&lvl=0'>See Details</a> </td>
 
-		</tr> 
-                {% endfor %}           
-            </table>       
-        {% else %}           
-            <p>No Leave Applications Were Found For You</p>       
-        {% endif %}     
+		</tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No Leave Applications Were Found For You</p>
+        {% endif %}
 
 	<br>
 
-<!--   
+<!--
 </td>
 </tr>
 </table>
@@ -229,4 +229,3 @@
  /// AL {{ boss_lvl }}
 
 {% endblock %}
-

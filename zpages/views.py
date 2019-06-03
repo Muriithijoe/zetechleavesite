@@ -123,7 +123,7 @@ def lvApplications(request):
                     lvSchedule = LvSchedules.objects.filter(staff_id = myUser, reschedule=0, sched_status__gt=5).first  #CAREFUL HERE // GET VS FILTER
 
                     form = LvApplyForm()
-                    return render(request, 'LvApplications.html',{'lvApps': lvApps,'lvApproveds':lvApproveds,'myLvBals':myLvBals,
+                    return render(request, 'lvApplications.html',{'lvApps': lvApps,'lvApproveds':lvApproveds,'myLvBals':myLvBals,
                                                                   'lvholidays':lvholidays,'query': myUser,'form': form,'saveMsg':saveMsg,
                                                                   'myitemx':myitemx, 'myitem3':myitem3, 'lvSchedule':lvSchedule, 'myfinaldate': myfinaldate})
                 except BadHeaderError:
@@ -139,7 +139,7 @@ def lvApplications(request):
                 lvSchedule = LvSchedules.objects.filter(staff_id = theStaff, reschedule=0, sched_status__gt=5).first  #CAREFUL HERE // GET VS FILTER
 
                 form = LvApplyForm()
-                return render(request, 'LvApplications.html', {'lvApps': lvApps, 'myLvBals':myLvBals,'lvholidays':lvholidays,
+                return render(request, 'lvApplications.html', {'lvApps': lvApps, 'myLvBals':myLvBals,'lvholidays':lvholidays,
                                                                'myitemx':myitemx, 'myitem3':myitem3 , 'myfinaldate': myfinaldate,
                                                                'theStaff': theStaff,'lvSchedule':lvSchedule,'lvErrorMessage':lvErrorMessage,'form': form})
     uid = request.user.username[5:9]
@@ -149,7 +149,7 @@ def lvApplications(request):
     lvholidays = LvHoliday.objects.all()
     lvSchedule = LvSchedules.objects.filter(staff_id = theStaff, reschedule=0, sched_status__gt=5).first  #CAREFUL HERE // GET VS FILTER
 
-    return render(request, 'LvApplications.html', {'lvApps': lvApps, 'myLvBals':myLvBals,'lvholidays':lvholidays,
+    return render(request, 'lvApplications.html', {'lvApps': lvApps, 'myLvBals':myLvBals,'lvholidays':lvholidays,
                                                    'lvSchedule':lvSchedule, 'theStaff': theStaff,'form': form})
 
 @login_required(login_url='/uzers/login/') #redirects
@@ -259,7 +259,7 @@ def lvApproval(request):
         #BE CAREFUL to Improve Next Query
         myUser = StaffMaster.objects.get(staff_id = uid)
 
-        return render(request, 'LvApprovals.html',
+        return render(request, 'lvApprovals.html',
                               {'myLvApps1': myLvApps1,'myLvApps2': myLvApps2,'myLvApps3': myLvApps3, 'myDepts':1,'user_id': uid, 'myUser':myUser,
                                'boss_lvl':boss_lvl,'lvholidays':lvholidays, 'approvalMsg':approvalMsg})     #CAREFUL With Variables
     except BadHeaderError:
@@ -357,13 +357,13 @@ def lvApprovalDetail(request):
         #return redirect('/lvApprovalDetail/')
 
         return render(request,
-                      'LvApprovalDetail.html', {'lvAppsList': lvAppsList,'boss_lvl':boss_lvl,'saveMsg':saveMsg,
+                      'lvApprovalDetail.html', {'lvAppsList': lvAppsList,'boss_lvl':boss_lvl,'saveMsg':saveMsg,
                                                 'theAppn': theAppn,'lvholidays':lvholidays, 'myUser':myUser,'theStaff':theStaff, 'saveMsg': saveMsg,
                                'theStaffBalances':theStaffBalances, 'theStaffSchedule':theStaffSchedule})
 
     except BadHeaderError:      #CAREFUL HERE - Broken Logic Block
         #return render(request, "LvApplications.html", {'form': form})
-        return render(request, "LvApprovalDetail.html", {'form': form})
+        return render(request, "lvApprovalDetail.html", {'form': form})
 
 
 @login_required(login_url='/uzers/login/') #redirects
@@ -492,7 +492,7 @@ def lvStaffSummary(request):
         lvSchedule = LvSchedules.objects.filter(staff_id = theStaff).first
         theStaffBalances = LvBalances.objects.filter(staff_id = theStaff).first
 
-        return render(request, 'LvStaffSummary.html',
+        return render(request, 'lvStaffSummary.html',
                               {'pendingLvs': pendingLvs,'lvCancelleds': lvCancelleds,'approvedLvs': approvedLvs,
                                'lvSchedule':lvSchedule, 'theStaff':theStaff, 'theStaffBalances':theStaffBalances})
 
@@ -1060,7 +1060,7 @@ def lvSchedApproval(request):
 
         lvScheds = LvSchedules.objects.filter(approver_id=uid, sched_status=boss_lvl, reschedule=0) #and LvSchedule.objects.filter(lv_days__gt=4)
 
-        return render(request, 'LvSchedApproval.html',
+        return render(request, 'lvSchedApproval.html',
                               {'lvScheds': lvScheds, 'myLvBals':myLvBals,'user_id': uid, 'myUser':myUser,'boss_lvl':boss_lvl,'schedApprovalMsg':schedApprovalMsg})
     except BadHeaderError:
         return render(request, "lvSchedApproval.html", {'form': form})
@@ -1114,12 +1114,12 @@ def lvSchedApprovalDetail(request):
         theStaffBalances = LvBalances.objects.filter(staff_id = theStaff).first
         lvholidays = LvHoliday.objects.all()
 
-        return render(request, 'LvSchedApprovalDetail.html', {'allStaffScheds': allStaffScheds,'theStaffBalances': theStaffBalances,
+        return render(request, 'lvSchedApprovalDetail.html', {'allStaffScheds': allStaffScheds,'theStaffBalances': theStaffBalances,
                                'lvholidays':lvholidays,'theStaff':theStaff, 'saveMsg': saveMsg,
                                'theStaffSchedule':theStaffSchedule, 'boss_lvl':boss_lvl})
 
     except BadHeaderError:
-        return render(request, "LvSchedApprovalDetail.html", {'form': form})
+        return render(request, "lvSchedApprovalDetail.html", {'form': form})
 
 
 @login_required(login_url='/uzers/login/') #redirects
@@ -1144,7 +1144,7 @@ def lvScheduleList(request):
 
             rptMessage ='Annual Leave Schedules  Selection'
 
-        return render(request, 'LvScheduleList.html',
+        return render(request, 'lvScheduleList.html',
                                       {'lvScheds': lvScheds })
     except BadHeaderError:
         return HttpResponse('Invalid header found.')

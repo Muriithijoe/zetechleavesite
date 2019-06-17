@@ -2,8 +2,8 @@
 
 {% block content %}
 
-    <h3>Online Leave Application
-	<br><br> Welcome {{ theStaff.first_name }}  [{{ user.username }}]</h3><br>
+    <h2>Online Leave Application
+	<br><br> Welcome {{ theStaff.first_name }}  [{{ user.username }}]</h2><br>
 
         {% if appns_count > 0 %}
        		<a href='/lvApproval?id=0&lvl=0'>Leave Approval [ {{ appns_count }} ]</a>

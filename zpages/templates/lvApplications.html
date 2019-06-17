@@ -1,7 +1,7 @@
 {% extends 'lvBaseDate.html' %}
 
 {% block content %}
-     
+
     <h3>Online Leave Application : Welcome {{ theStaff.first_name }} [{{ user.username }}] </h3>
 	<br>Annual Leave Applications Should be Applied For With 14 Days Lead Time.
 	<br>Maternity Leave Should be Applied For With 60 Days Lead Time <br><br>
@@ -25,8 +25,8 @@
 	</table>
 
 	{% else %}
-		<h3> Before You Can Apply For Leave</h3>
-		<h3> Enter A Leave Schedule ...</h3>
+		<h5> Before You Can Apply For Leave</h5>
+		<h5> Enter A Leave Schedule ...</h3>
 		<br><p> The Leave Application Form is Currently Hidden Because Your Leave Schedule Is Not Available.
 		<br><br> Take afew Minutes and Complete the Leave Schedule Form (Only Once Per Year)
 		And Return Here to Find the Leave Application Form Open.

@@ -381,7 +381,7 @@ def lvBalance(request):
             astaff.lvapprovers_set.all()
             allApprovers.append(astaff)
         '''
-        return render(request, 'LvBalance.html',
+        return render(request, 'lvBalance.html',
                               {'lvBals': lvBalances, 'user_id': 0})
     except BadHeaderError:
         return HttpResponse('Invalid header found.')

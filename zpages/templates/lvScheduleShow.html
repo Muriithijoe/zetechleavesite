@@ -2,7 +2,7 @@
 
 {% block content %}
 
-	<strong> Leave Schedule - Welcome {{ theStaff.first_name }} [{{ user.username }} ] </strong>
+	<strong><h5> Leave Schedule - Welcome {{ theStaff.first_name }} [{{ user.username }} ] </h5></strong>
 	<br><br>
 	Leave Schedule is an Annual Plan for taking leave during the year.
 	It is required to Submit only One Leave Schedule.<br>
@@ -14,7 +14,7 @@
 	</strong>
 
 	<strong>
-	<table bgcolor='#ddd' border=0 cellpadding =10>
+	<table bgcolor='#ddd' border=0 cellpadding =10 id="Schedtable">
 	<tr>
 	<td width=300px valign=top>
 	<br>
@@ -46,16 +46,16 @@
             </table>
 
         {% else %}
-            <strong>Enter Leave Schedule</strong>
+            <strong><h6>Enter Leave Schedule</h6></strong>
  	<br><br>
-            A Leave Schedule Was Not Found For You
-	<br> Enter a Schedule In the Form To The Right.
-	<br><br> You can break your Leave Schedule <strong>Upto 5 Blocks of Leave</strong>.
-	However, You May Choose to split 2, 3, 4 or 5 times. At Least 2 Blocks are Mandatory.
+            <h6>A Leave Schedule Was Not Found For You</h6>
+	<br> <h6>Enter a Schedule In the Form To The Right.</h6>
+	<br><br> <h6>You can break your Leave Schedule</h6> <strong><h6>Upto 5 Blocks of Leave</h6></strong>.
+	<h6>However, You May Choose to split 2, 3, 4 or 5 times. At Least 2 Blocks are Mandatory.</h6>
 
-	<br><br> The Leave Blocks Dates Should Not Be Overlapping.
+	<br><br> <h6>The Leave Blocks Dates Should Not Be Overlapping.</h6>
 
-	<br> Your Leave Schedule Total Days Should Not Exceed Your Leave Balance.
+	<br> <h6>Your Leave Schedule Total Days Should Not Exceed Your Leave Balance.</h6>
         {% endif %}
 
 	<!--
